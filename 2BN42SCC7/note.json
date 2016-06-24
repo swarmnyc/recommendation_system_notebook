@@ -1,0 +1,311 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n## Create Hive Tables For MovieLens\n\ndifferent sizes of datasets have each tables\n* ml_100k:\n    1. ml_100k_ratings\n    2. ml_100k_movies \n* ml_1m:\n    1. ml_1m_ratings\n    2. ml_1m_movies\n    3. ml_1m_movies_features\n    4. ml_1m_user_preferences\n* ml_latest:\n    1. ml_ratings\n    2. ml_movies\n    3. ml_movies_features\n    4. ml_user_preferences",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059495_1369522543",
+      "id": "20160623-203419_1201432194",
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003ch2\u003eCreate Hive Tables For MovieLens\u003c/h2\u003e\n\u003cp\u003edifferent sizes of datasets have each tables\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eml_100k:\u003col\u003e\n\u003cli\u003eml_100k_ratings\u003c/li\u003e\n\u003cli\u003eml_100k_movies\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/li\u003e\n\u003cli\u003eml_1m:\u003col\u003e\n\u003cli\u003eml_1m_ratings\u003c/li\u003e\n\u003cli\u003eml_1m_movies\u003c/li\u003e\n\u003cli\u003eml_1m_movies_features\u003c/li\u003e\n\u003cli\u003eml_1m_user_preferences\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/li\u003e\n\u003cli\u003eml_latest:\u003col\u003e\n\u003cli\u003eml_ratings\u003c/li\u003e\n\u003cli\u003eml_movies\u003c/li\u003e\n\u003cli\u003eml_movies_features\u003c/li\u003e\n\u003cli\u003eml_user_preferences\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n"
+      },
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "from pyspark.sql import DataFrameWriter, Row\n\nfile_base \u003d \"gs://swarm/experiments/datasets/\"",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_1823893023",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "# for ml_small\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_100k_ratings (userId int, movieId int, rating float)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_100k_movies (movieId int, title string)\")\n\n# for ml_small\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_1m_ratings (userId int, movieId int, rating float)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_1m_movies (movieId int, title string)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_1m_movies_features (movieId int, feature string, score float)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_1m_user_preferences (userId int, feature string, score float)\")\n\n# for ml_latest\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_ratings (userId int, movieId int, rating float)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_movies (movieId int, title string)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_movies_features (movieId int, feature string, score float)\")\nsqlContext.sql(\"CREATE TABLE IF NOT EXISTS ml_user_preferences (userId int, feature string, score float)\")",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_480739967",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "for ml_100k",
+      "text": "# ratings\nlines \u003d sc.textFile(file_base + \"ml-100k/u.data\")\ndata \u003d lines.map(lambda l: l.split()) \\\n            .map(lambda l: Row(int(l[0]), int(l[1]), float(l[2])))\n\ndfw \u003d DataFrameWriter(sqlContext.createDataFrame(data))\ndfw.insertInto(\"ml_100k_ratings\", overwrite\u003dTrue)\n\n# movies\nlines \u003d sc.textFile(file_base + \"ml-100k/u.item\")\ndata \u003d lines.map(lambda l: l.split(\"|\")) \\\n            .map(lambda l: Row(int(l[0]), l[1]))\n\ndfw \u003d DataFrameWriter(sqlContext.createDataFrame(data))\ndfw.insertInto(\"ml_100k_movies\", overwrite\u003dTrue)",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_1126064473",
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "For Ml-1M And ML-Latest",
+      "text": "dataset \u003d [(\"ml-1m\", \"ml_1m\"), (\"ml-latest\", \"ml\")][int(z.select(\"dataset\", [(\"0\", \"small\"), (\"1\", \"large\")], \"0\"))]\r\nfile_base2 \u003d file_base + dataset[0]\r\nname_base \u003d dataset[1]\r\n\r\n# ratings\r\nlines \u003d sc.textFile(file_base2 + \"/ratings.csv\")\r\nheader \u003d lines.first() #extract header\r\ndata \u003d lines.filter(lambda l: l!\u003dheader).map(lambda l: l.split(\",\")).map(lambda l: Row(int(l[0]), int(l[1]), float(l[2])))\r\n\r\nratings \u003d sqlContext.createDataFrame(data, [\"userId\", \"movieId\", \"rating\"])\r\ndfw \u003d DataFrameWriter(ratings)\r\ndfw.insertInto(name_base + \"_ratings\", overwrite\u003dTrue)\r\n\r\n# movies\r\ndef parse_line(l):\r\n    id \u003d int(l[0])\r\n    title \u003d \",\".join(x for x in l[1:-1]).strip(\"\\\"\")\r\n    features \u003d l[-1].split(\"|\")\r\n    return (id, title, features)\r\n\r\nlines \u003d sc.textFile(file_base2 + \"/movies.csv\")\r\nheader \u003d lines.first() #extract header\r\ndata \u003d lines.filter(lambda l: l!\u003dheader) \\\r\n        .map(lambda l: l.split(\",\")) \\\r\n        .map(parse_line).cache()\r\n\r\nmovies \u003d sqlContext.createDataFrame(data.map(lambda l: Row(l[0], l[1])), [\"movieId\", \"title\"])\r\nmovies_features \u003d sqlContext.createDataFrame(data.flatMap(lambda l: [Row(l[0], x, 1) for x in l[2]]), [\"movieId\", \"feature\", \"score\"])\r\n\r\ndfw \u003d DataFrameWriter(movies)\r\ndfw.insertInto(name_base + \"_movies\", overwrite\u003dTrue)\r\n\r\ndfw \u003d DataFrameWriter(movies_features)\r\ndfw.insertInto(name_base + \"_movies_features\", overwrite\u003dTrue)\r\n\r\n# User Preferences\r\nuser_preferences \u003d sqlContext.sql(\"\"\"\r\nSELECT r.userId, g.feature, avg(r.rating * g.score) as preference\r\nFROM {0}_movies m, {0}_ratings r, {0}_movies_features g\r\nWHERE m.movieId \u003d r.movieId AND \r\n      m.movieId \u003d g.movieId\r\nGROUP BY r.userId, g.feature\"\"\".format(name_base))\r\n\r\ndfw \u003d DataFrameWriter(user_preferences)\r\ndfw.insertInto(name_base + \"_user_preferences\", overwrite\u003dTrue)",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {
+          "dataset": "1"
+        },
+        "forms": {
+          "dataset": {
+            "name": "dataset",
+            "displayName": "dataset",
+            "defaultValue": "",
+            "options": [
+              {
+                "value": "0",
+                "displayName": "small"
+              },
+              {
+                "value": "1",
+                "displayName": "large"
+              }
+            ],
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_1737668558",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "For Test",
+      "text": "%sql\nselect * from ml_user_preferences",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 528.0,
+          "optionOpen": true,
+          "keys": [
+            {
+              "name": "feature",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "score",
+              "index": 2.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "yAxis": {
+              "name": "score",
+              "index": 2.0,
+              "aggr": "sum"
+            },
+            "xAxis": {
+              "name": "feature",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_952869821",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "userid\tfeature\tscore\n4\tAdventure\t3.7333333\n5\tIMAX\t3.5\n9\tCrime\t4.0\n4\tRomance\t3.7857144\n1\tChildren\t2.5\n3\tDrama\t4.3333335\n4\tDocumentary\t4.25\n7\tThriller\t4.3333335\n4\tCrime\t3.689655\n9\tComedy\t2.75\n8\tSci-Fi\t2.8\n5\tAction\t3.1538463\n7\tWar\t4.0\n2\tThriller\t3.75\n4\tMusical\t3.7142856\n7\tChildren\t5.0\n9\tDrama\t3.5454545\n8\tFantasy\t1.25\n4\tComedy\t3.7330098\n7\tAnimation\t5.0\n5\tMystery\t2.25\n5\tAdventure\t4.0\n5\tRomance\t1.5\n6\tHorror\t2.0\n4\tDrama\t3.731579\n8\tThriller\t3.4285715\n5\tCrime\t3.5\n9\tSci-Fi\t3.5\n6\tWestern\t5.0\n6\tAction\t4.0\n8\tChildren\t1.8333334\n5\tComedy\t3.1875\n8\tAnimation\t0.5\n4\tSci-Fi\t3.2\n6\tAdventure\t3.875\n7\tIMAX\t5.0\n1\tAction\t3.0\n6\tRomance\t3.0\n3\tWar\t4.0\n5\tDrama\t3.9666667\n4\tFantasy\t3.6666667\n3\tAnimation\t4.0\n1\tAdventure\t2.75\n2\tIMAX\t4.0\n9\tThriller\t4.0\n6\tCrime\t5.0\n7\tAction\t4.4444447\n9\tWar\t4.5\n4\tThriller\t3.6206896\n9\tChildren\t2.5\n1\tCrime\t5.0\n6\tComedy\t3.3181818\n5\tSci-Fi\t3.2\n7\tMystery\t4.6666665\n7\tAdventure\t4.5\n2\tAction\t3.5\n7\tRomance\t2.75\n4\tWar\t2.5\n8\tHorror\t3.5\n4\tChildren\t3.625\n6\tDrama\t4.5\n5\tFantasy\t3.0\n1\tComedy\t3.0\n4\tAnimation\t3.5714285\n7\tCrime\t4.214286\n8\tWestern\t3.5\n1\tDrama\t3.75\n8\tAction\t3.2142856\n5\tThriller\t3.6111112\n7\tComedy\t3.25\n6\tSci-Fi\t2.6666667\n8\tMystery\t3.0\n8\tAdventure\t2.75\n8\tRomance\t3.5\n5\tWar\t3.75\n5\tChildren\t3.0\n7\tDrama\t4.1875\n6\tFantasy\t2.5\n5\tAnimation\t3.0\n8\tCrime\t4.0\n3\tRomance\t4.0\n4\tHorror\t3.3333333\n2\tDrama\t4.5\n9\tAction\t4.1666665\n6\tThriller\t4.0\n8\tMusical\t0.5\n8\tComedy\t1.8333334\n7\tSci-Fi\t4.5\n9\tMystery\t4.0\n9\tAdventure\t3.5\n4\tWestern\t3.0\n4\tAction\t3.8333333\n9\tRomance\t3.375\n6\tWar\t4.5\n1\tThriller\t5.0\n3\tMusical\t4.0\n4\tFilm-Noir\t4.5\n6\tChildren\t3.1666667\n8\tDrama\t3.2\n7\tFantasy\t5.0\n3\tComedy\t4.5\n6\tAnimation\t3.5\n2\tSci-Fi\t3.75\n4\tMystery\t3.642857\n"
+      },
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%sql\nselect * from ml_movies_features",
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_408910497",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "movieid\tfeature\tscore\n1\tAdventure\t1.0\n1\tAnimation\t1.0\n1\tChildren\t1.0\n1\tComedy\t1.0\n1\tFantasy\t1.0\n2\tAdventure\t1.0\n2\tChildren\t1.0\n2\tFantasy\t1.0\n3\tComedy\t1.0\n3\tRomance\t1.0\n4\tComedy\t1.0\n4\tDrama\t1.0\n4\tRomance\t1.0\n5\tComedy\t1.0\n6\tAction\t1.0\n6\tCrime\t1.0\n6\tThriller\t1.0\n7\tComedy\t1.0\n7\tRomance\t1.0\n8\tAdventure\t1.0\n8\tChildren\t1.0\n9\tAction\t1.0\n10\tAction\t1.0\n10\tAdventure\t1.0\n10\tThriller\t1.0\n11\tComedy\t1.0\n11\tDrama\t1.0\n11\tRomance\t1.0\n12\tComedy\t1.0\n12\tHorror\t1.0\n13\tAdventure\t1.0\n13\tAnimation\t1.0\n13\tChildren\t1.0\n14\tDrama\t1.0\n15\tAction\t1.0\n15\tAdventure\t1.0\n15\tRomance\t1.0\n16\tCrime\t1.0\n16\tDrama\t1.0\n17\tDrama\t1.0\n17\tRomance\t1.0\n18\tComedy\t1.0\n19\tComedy\t1.0\n20\tAction\t1.0\n20\tComedy\t1.0\n20\tCrime\t1.0\n20\tDrama\t1.0\n20\tThriller\t1.0\n21\tComedy\t1.0\n21\tCrime\t1.0\n21\tThriller\t1.0\n22\tCrime\t1.0\n22\tDrama\t1.0\n22\tHorror\t1.0\n22\tMystery\t1.0\n22\tThriller\t1.0\n23\tAction\t1.0\n23\tCrime\t1.0\n23\tThriller\t1.0\n24\tDrama\t1.0\n24\tSci-Fi\t1.0\n25\tDrama\t1.0\n25\tRomance\t1.0\n26\tDrama\t1.0\n27\tChildren\t1.0\n27\tDrama\t1.0\n28\tDrama\t1.0\n28\tRomance\t1.0\n29\tAdventure\t1.0\n29\tDrama\t1.0\n29\tFantasy\t1.0\n29\tMystery\t1.0\n29\tSci-Fi\t1.0\n30\tCrime\t1.0\n30\tDrama\t1.0\n31\tDrama\t1.0\n32\tMystery\t1.0\n32\tSci-Fi\t1.0\n32\tThriller\t1.0\n33\tAdventure\t1.0\n33\tRomance\t1.0\n33\tIMAX\t1.0\n34\tChildren\t1.0\n34\tDrama\t1.0\n35\tDrama\t1.0\n35\tRomance\t1.0\n36\tCrime\t1.0\n36\tDrama\t1.0\n37\tDocumentary\t1.0\n37\tIMAX\t1.0\n38\tChildren\t1.0\n38\tComedy\t1.0\n39\tComedy\t1.0\n39\tRomance\t1.0\n40\tDrama\t1.0\n41\tDrama\t1.0\n41\tWar\t1.0\n42\tAction\t1.0\n42\tCrime\t1.0\n42\tDrama\t1.0\n43\tDrama\t1.0\n44\tAction\t1.0\n44\tAdventure\t1.0\n44\tFantasy\t1.0\n45\tComedy\t1.0\n45\tDrama\t1.0\n45\tThriller\t1.0\n46\tDrama\t1.0\n46\tRomance\t1.0\n47\tMystery\t1.0\n47\tThriller\t1.0\n48\tAnimation\t1.0\n48\tChildren\t1.0\n48\tDrama\t1.0\n48\tMusical\t1.0\n48\tRomance\t1.0\n49\tDrama\t1.0\n49\tRomance\t1.0\n50\tCrime\t1.0\n50\tMystery\t1.0\n50\tThriller\t1.0\n51\tAction\t1.0\n51\tDrama\t1.0\n51\tThriller\t1.0\n52\tComedy\t1.0\n52\tDrama\t1.0\n52\tRomance\t1.0\n53\tAdventure\t1.0\n53\tDrama\t1.0\n54\tChildren\t1.0\n54\tComedy\t1.0\n55\tDrama\t1.0\n56\tAdventure\t1.0\n56\tChildren\t1.0\n56\tComedy\t1.0\n56\tFantasy\t1.0\n57\tDrama\t1.0\n58\tComedy\t1.0\n58\tDrama\t1.0\n58\tRomance\t1.0\n59\tDrama\t1.0\n59\tMystery\t1.0\n60\tAdventure\t1.0\n60\tChildren\t1.0\n60\tFantasy\t1.0\n61\tDrama\t1.0\n61\tThriller\t1.0\n62\tDrama\t1.0\n63\tComedy\t1.0\n63\tCrime\t1.0\n64\tComedy\t1.0\n64\tRomance\t1.0\n65\tComedy\t1.0\n66\tAction\t1.0\n66\tSci-Fi\t1.0\n66\tThriller\t1.0\n67\tDrama\t1.0\n68\tComedy\t1.0\n68\tRomance\t1.0\n69\tComedy\t1.0\n70\tAction\t1.0\n70\tComedy\t1.0\n70\tHorror\t1.0\n70\tThriller\t1.0\n71\tAction\t1.0\n72\tComedy\t1.0\n72\tDrama\t1.0\n73\tDrama\t1.0\n73\tWar\t1.0\n74\tDrama\t1.0\n74\tRomance\t1.0\n75\tComedy\t1.0\n75\tDrama\t1.0\n76\tAction\t1.0\n76\tSci-Fi\t1.0\n76\tThriller\t1.0\n77\tDocumentary\t1.0\n78\tAction\t1.0\n78\tCrime\t1.0\n78\tDrama\t1.0\n78\tThriller\t1.0\n79\tDrama\t1.0\n79\tThriller\t1.0\n80\tChildren\t1.0\n80\tDrama\t1.0\n81\tCrime\t1.0\n81\tDrama\t1.0\n81\tRomance\t1.0\n82\tComedy\t1.0\n82\tDrama\t1.0\n83\tDrama\t1.0\n83\tRomance\t1.0\n84\tComedy\t1.0\n84\tDrama\t1.0\n85\tDrama\t1.0\n85\tRomance\t1.0\n86\tAction\t1.0\n86\tAdventure\t1.0\n86\tDrama\t1.0\n87\tChildren\t1.0\n87\tComedy\t1.0\n88\tComedy\t1.0\n89\tAction\t1.0\n89\tThriller\t1.0\n90\tDrama\t1.0\n92\tDrama\t1.0\n92\tHorror\t1.0\n92\tThriller\t1.0\n93\tComedy\t1.0\n93\tHorror\t1.0\n93\tRomance\t1.0\n94\tComedy\t1.0\n94\tDrama\t1.0\n94\tRomance\t1.0\n95\tAction\t1.0\n95\tAdventure\t1.0\n95\tThriller\t1.0\n96\tComedy\t1.0\n96\tDrama\t1.0\n97\tCrime\t1.0\n97\tDrama\t1.0\n98\tAction\t1.0\n98\tThriller\t1.0\n99\tDocumentary\t1.0\n100\tDrama\t1.0\n100\tThriller\t1.0\n101\tAdventure\t1.0\n101\tComedy\t1.0\n101\tCrime\t1.0\n101\tRomance\t1.0\n102\tComedy\t1.0\n103\tMystery\t1.0\n103\tSci-Fi\t1.0\n103\tThriller\t1.0\n104\tComedy\t1.0\n105\tDrama\t1.0\n105\tRomance\t1.0\n106\tComedy\t1.0\n106\tDrama\t1.0\n107\tAdventure\t1.0\n107\tChildren\t1.0\n107\tComedy\t1.0\n107\tMusical\t1.0\n108\tDocumentary\t1.0\n109\tComedy\t1.0\n109\tDrama\t1.0\n109\tThriller\t1.0\n110\tAction\t1.0\n110\tDrama\t1.0\n110\tWar\t1.0\n111\tCrime\t1.0\n111\tDrama\t1.0\n111\tThriller\t1.0\n112\tAction\t1.0\n112\tAdventure\t1.0\n112\tComedy\t1.0\n112\tCrime\t1.0\n113\tDrama\t1.0\n113\tMystery\t1.0\n114\tDrama\t1.0\n115\tComedy\t1.0\n116\tDocumentary\t1.0\n117\tCrime\t1.0\n117\tDrama\t1.0\n118\tComedy\t1.0\n118\tRomance\t1.0\n119\tComedy\t1.0\n120\tAdventure\t1.0\n120\tComedy\t1.0\n120\tDrama\t1.0\n121\tDrama\t1.0\n122\tComedy\t1.0\n122\tRomance\t1.0\n123\tDrama\t1.0\n123\tMystery\t1.0\n123\tRomance\t1.0\n124\tDrama\t1.0\n125\tComedy\t1.0\n126\tAdventure\t1.0\n126\tChildren\t1.0\n126\tFantasy\t1.0\n127\tDrama\t1.0\n128\tDocumentary\t1.0\n129\tComedy\t1.0\n129\tRomance\t1.0\n130\tDrama\t1.0\n131\tDrama\t1.0\n131\tRomance\t1.0\n132\tThriller\t1.0\n133\tComedy\t1.0\n133\tDrama\t1.0\n134\tDocumentary\t1.0\n135\tComedy\t1.0\n136\tDocumentary\t1.0\n137\tDocumentary\t1.0\n138\tDrama\t1.0\n139\tAction\t1.0\n139\tDrama\t1.0\n140\tDrama\t1.0\n140\tRomance\t1.0\n141\tComedy\t1.0\n142\tDrama\t1.0\n143\tDrama\t1.0\n144\tComedy\t1.0\n145\tAction\t1.0\n145\tComedy\t1.0\n145\tCrime\t1.0\n145\tDrama\t1.0\n145\tThriller\t1.0\n146\tAdventure\t1.0\n146\tChildren\t1.0\n147\tDrama\t1.0\n148\tDrama\t1.0\n149\tCrime\t1.0\n149\tDrama\t1.0\n149\tThriller\t1.0\n150\tAdventure\t1.0\n150\tDrama\t1.0\n150\tIMAX\t1.0\n151\tAction\t1.0\n151\tDrama\t1.0\n151\tRomance\t1.0\n151\tWar\t1.0\n152\tDrama\t1.0\n152\tHorror\t1.0\n153\tAction\t1.0\n153\tAdventure\t1.0\n153\tComedy\t1.0\n153\tCrime\t1.0\n154\tDrama\t1.0\n155\tAdventure\t1.0\n155\tDrama\t1.0\n155\tWar\t1.0\n156\tComedy\t1.0\n156\tDrama\t1.0\n157\tComedy\t1.0\n157\tWar\t1.0\n158\tAdventure\t1.0\n158\tChildren\t1.0\n159\tCrime\t1.0\n159\tDrama\t1.0\n159\tMystery\t1.0\n160\tAction\t1.0\n160\tAdventure\t1.0\n160\tMystery\t1.0\n160\tSci-Fi\t1.0\n161\tDrama\t1.0\n161\tThriller\t1.0\n161\tWar\t1.0\n162\tDocumentary\t1.0\n163\tAction\t1.0\n163\tRomance\t1.0\n163\tWestern\t1.0\n164\tCrime\t1.0\n164\tFilm-Noir\t1.0\n164\tMystery\t1.0\n164\tThriller\t1.0\n165\tAction\t1.0\n165\tCrime\t1.0\n165\tThriller\t1.0\n166\tComedy\t1.0\n166\tCrime\t1.0\n166\tDrama\t1.0\n167\tDrama\t1.0\n168\tAction\t1.0\n168\tDrama\t1.0\n168\tRomance\t1.0\n169\tAdventure\t1.0\n169\tChildren\t1.0\n169\tDrama\t1.0\n170\tAction\t1.0\n170\tAdventure\t1.0\n170\tCrime\t1.0\n170\tThriller\t1.0\n171\tComedy\t1.0\n171\tDrama\t1.0\n172\tAction\t1.0\n172\tSci-Fi\t1.0\n172\tThriller\t1.0\n173\tAction\t1.0\n173\tCrime\t1.0\n173\tSci-Fi\t1.0\n174\tComedy\t1.0\n175\tDrama\t1.0\n176\tComedy\t1.0\n177\tHorror\t1.0\n178\tComedy\t1.0\n178\tDrama\t1.0\n179\tDrama\t1.0\n179\tRomance\t1.0\n180\tComedy\t1.0\n180\tRomance\t1.0\n181\tAction\t1.0\n181\tChildren\t1.0\n182\tDrama\t1.0\n182\tRomance\t1.0\n183\tComedy\t1.0\n183\tHorror\t1.0\n183\tThriller\t1.0\n184\tDrama\t1.0\n185\tAction\t1.0\n185\tCrime\t1.0\n185\tThriller\t1.0\n186\tComedy\t1.0\n186\tRomance\t1.0\n187\tComedy\t1.0\n188\tFantasy\t1.0\n188\tHorror\t1.0\n188\tMystery\t1.0\n189\tComedy\t1.0\n189\tFantasy\t1.0\n190\tThriller\t1.0\n191\tDrama\t1.0\n191\tRomance\t1.0\n192\tDocumentary\t1.0\n193\tDrama\t1.0\n194\tComedy\t1.0\n194\tDrama\t1.0\n195\tComedy\t1.0\n195\tDrama\t1.0\n195\tRomance\t1.0\n196\tHorror\t1.0\n196\tSci-Fi\t1.0\n197\tDrama\t1.0\n198\tAction\t1.0\n198\tCrime\t1.0\n198\tDrama\t1.0\n198\tMystery\t1.0\n198\tSci-Fi\t1.0\n198\tThriller\t1.0\n199\tDrama\t1.0\n199\tMusical\t1.0\n199\tRomance\t1.0\n200\tThriller\t1.0\n201\tDrama\t1.0\n201\tFantasy\t1.0\n202\tDrama\t1.0\n202\tRomance\t1.0\n203\tComedy\t1.0\n204\tAction\t1.0\n205\tComedy\t1.0\n205\tDrama\t1.0\n206\tDocumentary\t1.0\n207\tDrama\t1.0\n207\tRomance\t1.0\n208\tAction\t1.0\n208\tAdventure\t1.0\n208\tSci-Fi\t1.0\n209\tDrama\t1.0\n210\tWestern\t1.0\n211\tDrama\t1.0\n212\tAdventure\t1.0\n212\tComedy\t1.0\n212\tCrime\t1.0\n212\tMystery\t1.0\n213\tDrama\t1.0\n214\tDrama\t1.0\n214\tWar\t1.0\n215\tDrama\t1.0\n215\tRomance\t1.0\n216\tComedy\t1.0\n217\tDrama\t1.0\n217\tThriller\t1.0\n218\tComedy\t1.0\n218\tDrama\t1.0\n219\tDrama\t1.0\n220\tHorror\t1.0\n222\tDrama\t1.0\n222\tRomance\t1.0\n223\tComedy\t1.0\n224\tComedy\t1.0\n224\tDrama\t1.0\n224\tRomance\t1.0\n225\tDrama\t1.0\n225\tThriller\t1.0\n226\tThriller\t1.0\n227\tAction\t1.0\n227\tThriller\t1.0\n228\tComedy\t1.0\n229\tDrama\t1.0\n229\tThriller\t1.0\n230\tDrama\t1.0\n230\tThriller\t1.0\n231\tAdventure\t1.0\n231\tComedy\t1.0\n232\tComedy\t1.0\n232\tDrama\t1.0\n232\tRomance\t1.0\n233\tDrama\t1.0\n234\tComedy\t1.0\n235\tComedy\t1.0\n235\tDrama\t1.0\n236\tAction\t1.0\n236\tComedy\t1.0\n236\tRomance\t1.0\n237\tComedy\t1.0\n237\tRomance\t1.0\n238\tAdventure\t1.0\n238\tChildren\t1.0\n239\tAnimation\t1.0\n239\tChildren\t1.0\n239\tComedy\t1.0\n239\tRomance\t1.0\n240\tThriller\t1.0\n241\tChildren\t1.0\n241\tDrama\t1.0\n242\tDrama\t1.0\n242\tMusical\t1.0\n243\tChildren\t1.0\n243\tComedy\t1.0\n243\tFantasy\t1.0\n244\tAnimation\t1.0\n244\tChildren\t1.0\n245\tCrime\t1.0\n245\tDrama\t1.0\n246\tDocumentary\t1.0\n247\tCrime\t1.0\n247\tDrama\t1.0\n248\tComedy\t1.0\n249\tDrama\t1.0\n249\tRomance\t1.0\n250\tChildren\t1.0\n250\tComedy\t1.0\n251\tAction\t1.0\n252\tComedy\t1.0\n252\tRomance\t1.0\n253\tDrama\t1.0\n253\tHorror\t1.0\n254\tDrama\t1.0\n255\tComedy\t1.0\n256\tComedy\t1.0\n256\tSci-Fi\t1.0\n257\tMystery\t1.0\n257\tThriller\t1.0\n258\tAdventure\t1.0\n258\tChildren\t1.0\n258\tComedy\t1.0\n258\tFantasy\t1.0\n258\tRomance\t1.0\n259\tCrime\t1.0\n259\tDrama\t1.0\n259\tThriller\t1.0\n260\tAction\t1.0\n260\tAdventure\t1.0\n260\tSci-Fi\t1.0\n261\tDrama\t1.0\n262\tChildren\t1.0\n262\tDrama\t1.0\n263\tDrama\t1.0\n264\tDrama\t1.0\n265\tDrama\t1.0\n265\tFantasy\t1.0\n265\tRomance\t1.0\n266\tDrama\t1.0\n266\tRomance\t1.0\n266\tWar\t1.0\n266\tWestern\t1.0\n267\tComedy\t1.0\n268\tCrime\t1.0\n268\tDrama\t1.0\n269\tDrama\t1.0\n270\tDrama\t1.0\n270\tRomance\t1.0\n271\tDrama\t1.0\n272\tComedy\t1.0\n272\tDrama\t1.0\n273\tDrama\t1.0\n273\tHorror\t1.0\n273\tSci-Fi\t1.0\n274\tComedy\t1.0\n275\tComedy\t1.0\n276\tComedy\t1.0\n276\tRomance\t1.0\n277\tDrama\t1.0\n278\tComedy\t1.0\n279\tDrama\t1.0\n280\tDrama\t1.0\n280\tThriller\t1.0\n281\tComedy\t1.0\n281\tDrama\t1.0\n281\tRomance\t1.0\n282\tDrama\t1.0\n283\tCrime\t1.0\n283\tDrama\t1.0\n284\tAction\t1.0\n284\tCrime\t1.0\n285\tDrama\t1.0\n285\tHorror\t1.0\n286\tAction\t1.0\n286\tSci-Fi\t1.0\n286\tThriller\t1.0\n287\tComedy\t1.0\n287\tRomance\t1.0\n288\tAction\t1.0\n288\tCrime\t1.0\n288\tThriller\t1.0\n289\tComedy\t1.0\n289\tRomance\t1.0\n290\tCrime\t1.0\n290\tDrama\t1.0\n291\tDrama\t1.0\n291\tThriller\t1.0\n292\tAction\t1.0\n292\tDrama\t1.0\n292\tSci-Fi\t1.0\n292\tThriller\t1.0\n293\tAction\t1.0\n293\tCrime\t1.0\n293\tDrama\t1.0\n293\tThriller\t1.0\n294\tComedy\t1.0\n294\tRomance\t1.0\n295\tComedy\t1.0\n295\tRomance\t1.0\n296\tComedy\t1.0\n296\tCrime\t1.0\n296\tDrama\t1.0\n296\tThriller\t1.0\n297\tDrama\t1.0\n298\tDrama\t1.0\n299\tDrama\t1.0\n300\tDrama\t1.0\n301\tDrama\t1.0\n301\tRomance\t1.0\n302\tDrama\t1.0\n302\tRomance\t1.0\n303\tAction\t1.0\n303\tThriller\t1.0\n303\tWestern\t1.0\n304\tComedy\t1.0\n304\tDrama\t1.0\n305\tComedy\t1.0\n306\tDrama\t1.0\n307\tDrama\t1.0\n308\tComedy\t1.0\n308\tDrama\t1.0\n309\tDrama\t1.0\n310\tComedy\t1.0\n311\tHorror\t1.0\n311\tThriller\t1.0\n312\tComedy\t1.0\n313\tAnimation\t1.0\n313\tChildren\t1.0\n314\tChildren\t1.0\n314\tDrama\t1.0\n314\tFantasy\t1.0\n314\tMystery\t1.0\n315\tAction\t1.0\n315\tDrama\t1.0\n315\tThriller\t1.0\n316\tAction\t1.0\n316\tAdventure\t1.0\n316\tSci-Fi\t1.0\n317\tComedy\t1.0\n317\tDrama\t1.0\n317\tFantasy\t1.0\n318\tCrime\t1.0\n318\tDrama\t1.0\n319\tComedy\t1.0\n319\tDrama\t1.0\n319\tThriller\t1.0\n320\tFilm-Noir\t1.0\n320\tThriller\t1.0\n321\tDrama\t1.0\n322\tComedy\t1.0\n322\tDrama\t1.0\n324\tComedy\t1.0\n324\tDrama\t1.0\n325\tComedy\t1.0\n326\tDrama\t1.0\n327\tAction\t1.0\n327\tComedy\t1.0\n327\tSci-Fi\t1.0\n328\tHorror\t1.0\n328\tThriller\t1.0\n329\tAdventure\t1.0\n329\tDrama\t1.0\n329\tSci-Fi\t1.0\n330\tAction\t1.0\n330\tCrime\t1.0\n330\tHorror\t1.0\n331\tDrama\t1.0\n332\tHorror\t1.0\n332\tSci-Fi\t1.0\n333\tComedy\t1.0\n334\tDrama\t1.0\n335\tMystery\t1.0\n335\tThriller\t1.0\n336\tDrama\t1.0\n336\tWar\t1.0\n337\tDrama\t1.0\n338\tAction\t1.0\n338\tSci-Fi\t1.0\n338\tThriller\t1.0\n339\tComedy\t1.0\n339\tRomance\t1.0\n340\tAdventure\t1.0\n340\tDrama\t1.0\n340\tWar\t1.0\n341\tDrama\t1.0\n342\tComedy\t1.0\n343\tChildren\t1.0\n344\tComedy\t1.0\n345\tComedy\t1.0\n345\tDrama\t1.0\n346\tDrama\t1.0\n346\tMusical\t1.0\n347\tDrama\t1.0\n347\tFilm-Noir\t1.0\n347\tRomance\t1.0\n348\tComedy\t1.0\n349\tAction\t1.0\n349\tCrime\t1.0\n349\tDrama\t1.0\n349\tThriller\t1.0\n350\tDrama\t1.0\n350\tMystery\t1.0\n350\tThriller\t1.0\n351\tComedy\t1.0\n351\tDrama\t1.0\n351\tRomance\t1.0\n352\tComedy\t1.0\n352\tDrama\t1.0\n353\tAction\t1.0\n353\tCrime\t1.0\n353\tFantasy\t1.0\n353\tThriller\t1.0\n354\tDrama\t1.0\n355\tChildren\t1.0\n355\tComedy\t1.0\n355\tFantasy\t1.0\n356\tComedy\t1.0\n356\tDrama\t1.0\n356\tRomance\t1.0\n356\tWar\t1.0\n357\tComedy\t1.0\n357\tRomance\t1.0\n358\tDrama\t1.0\n359\tComedy\t1.0\n359\tDrama\t1.0\n359\tRomance\t1.0\n360\tAction\t1.0\n360\tComedy\t1.0\n361\tComedy\t1.0\n361\tDrama\t1.0\n361\tRomance\t1.0\n362\tAdventure\t1.0\n362\tChildren\t1.0\n362\tRomance\t1.0\n363\tDocumentary\t1.0\n364\tAdventure\t1.0\n364\tAnimation\t1.0\n364\tChildren\t1.0\n364\tDrama\t1.0\n364\tMusical\t1.0\n364\tIMAX\t1.0\n365\tDrama\t1.0\n366\tDrama\t1.0\n366\tHorror\t1.0\n366\tMystery\t1.0\n366\tThriller\t1.0\n367\tAction\t1.0\n367\tComedy\t1.0\n367\tCrime\t1.0\n367\tFantasy\t1.0\n368\tAdventure\t1.0\n368\tComedy\t1.0\n368\tWestern\t1.0\n369\tDrama\t1.0\n370\tAction\t1.0\n370\tComedy\t1.0\n371\tComedy\t1.0\n371\tDrama\t1.0\n372\tComedy\t1.0\n372\tDrama\t1.0\n372\tRomance\t1.0\n373\tThriller\t1.0\n374\tChildren\t1.0\n374\tComedy\t1.0\n375\tDrama\t1.0\n376\tAction\t1.0\n376\tThriller\t1.0\n377\tAction\t1.0\n377\tRomance\t1.0\n377\tThriller\t1.0\n378\tComedy\t1.0\n378\tRomance\t1.0\n379\tAction\t1.0\n379\tSci-Fi\t1.0\n379\tThriller\t1.0\n380\tAction\t1.0\n380\tAdventure\t1.0\n380\tComedy\t1.0\n380\tRomance\t1.0\n380\tThriller\t1.0\n381\tDrama\t1.0\n381\tRomance\t1.0\n382\tDrama\t1.0\n382\tHorror\t1.0\n382\tRomance\t1.0\n382\tThriller\t1.0\n383\tWestern\t1.0\n384\tAction\t1.0\n384\tCrime\t1.0\n384\tDrama\t1.0\n385\tDrama\t1.0\n386\tDrama\t1.0\n387\tAction\t1.0\n387\tComedy\t1.0\n388\tDrama\t1.0\n389\tDrama\t1.0\n389\tRomance\t1.0\n389\tWar\t1.0\n390\tAction\t1.0\n390\tCrime\t1.0\n390\tDrama\t1.0\n391\tCrime\t1.0\n391\tDrama\t1.0\n392\tAdventure\t1.0\n392\tAnimation\t1.0\n393\tAction\t1.0\n393\tAdventure\t1.0\n393\tFantasy\t1.0\n394\tComedy\t1.0\n395\tDrama\t1.0\n395\tFantasy\t1.0\n395\tRomance\t1.0\n396\tDrama\t1.0\n397\tHorror\t1.0\n398\tDocumentary\t1.0\n399\tDrama\t1.0\n400\tDrama\t1.0\n401\tAction\t1.0\n401\tThriller\t1.0\n402\tComedy\t1.0\n403\tComedy\t1.0\n403\tCrime\t1.0\n403\tDrama\t1.0\n404\tDocumentary\t1.0\n405\tAction\t1.0\n405\tFantasy\t1.0\n406\tDrama\t1.0\n407\tHorror\t1.0\n407\tThriller\t1.0\n408\tDrama\t1.0\n409\tCrime\t1.0\n409\tDrama\t1.0\n410\tChildren\t1.0\n410\tComedy\t1.0\n410\tFantasy\t1.0\n411\tComedy\t1.0\n411\tDocumentary\t1.0\n412\tDrama\t1.0\n413\tComedy\t1.0\n414\tComedy\t1.0\n415\tComedy\t1.0\n415\tThriller\t1.0\n416\tWestern\t1.0\n417\tComedy\t1.0\n417\tRomance\t1.0\n418\tDrama\t1.0\n419\tComedy\t1.0\n420\tAction\t1.0\n420\tComedy\t1.0\n420\tCrime\t1.0\n420\tThriller\t1.0\n421\tAdventure\t1.0\n421\tChildren\t1.0\n421\tDrama\t1.0\n422\tThriller\t1.0\n423\tAction\t1.0\n423\tThriller\t1.0\n424\tDrama\t1.0\n425\tDrama\t1.0\n425\tRomance\t1.0\n426\tHorror\t1.0\n426\tSci-Fi\t1.0\n426\tThriller\t1.0\n427\tDrama\t1.0\n427\tMystery\t1.0\n427\tRomance\t1.0\n427\tThriller\t1.0\n428\tDrama\t1.0\n429\tComedy\t1.0\n430\tComedy\t1.0\n430\tDrama\t1.0\n431\tCrime\t1.0\n431\tDrama\t1.0\n432\tAdventure\t1.0\n432\tComedy\t1.0\n432\tWestern\t1.0\n433\tComedy\t1.0\n434\tAction\t1.0\n434\tAdventure\t1.0\n434\tThriller\t1.0\n435\tComedy\t1.0\n435\tSci-Fi\t1.0\n436\tDrama\t1.0\n436\tThriller\t1.0\n437\tComedy\t1.0\n438\tAction\t1.0\n438\tComedy\t1.0\n438\tDrama\t1.0\n439\tDrama\t1.0\n440\tComedy\t1.0\n440\tRomance\t1.0\n441\tComedy\t1.0\n442\tAction\t1.0\n442\tAdventure\t1.0\n442\tSci-Fi\t1.0\n443\tAdventure\t1.0\n443\tDocumentary\t1.0\n444\tComedy\t1.0\n444\tRomance\t1.0\n445\tComedy\t1.0\n446\tDrama\t1.0\n446\tRomance\t1.0\n447\tComedy\t1.0\n447\tRomance\t1.0\n448\tDrama\t1.0\n449\tComedy\t1.0\n450\tComedy\t1.0\n450\tDrama\t1.0\n451\tDrama\t1.0\n451\tMystery\t1.0\n451\tRomance\t1.0\n452\tDrama\t1.0\n453\tComedy\t1.0\n453\tRomance\t1.0\n454\tDrama\t1.0\n454\tThriller\t1.0\n455\tAdventure\t1.0\n455\tChildren\t1.0\n455\tDrama\t1.0\n456\tCrime\t1.0\n456\tDrama\t1.0\n456\tThriller\t1.0\n457\tThriller\t1.0\n458\tDrama\t1.0\n458\tWestern\t1.0\n459\tAction\t1.0\n459\tAdventure\t1.0\n459\tCrime\t1.0\n459\tDrama\t1.0\n459\tRomance\t1.0\n459\tThriller\t1.0\n460\tComedy\t1.0\n461\tDrama\t1.0\n461\tRomance\t1.0\n462\tAction\t1.0\n462\tAdventure\t1.0\n463\tCrime\t1.0\n463\tDrama\t1.0\n463\tThriller\t1.0\n464\tAction\t1.0\n464\tAdventure\t1.0\n464\tCrime\t1.0\n464\tThriller\t1.0\n465\tAction\t1.0\n465\tDrama\t1.0\n465\tWar\t1.0\n466\tAction\t1.0\n466\tComedy\t1.0\n466\tWar\t1.0\n467\tComedy\t1.0\n468\tComedy\t1.0\n468\tRomance\t1.0\n469\tDrama\t1.0\n469\tRomance\t1.0\n470\tComedy\t1.0\n471\tComedy\t1.0\n472\tComedy\t1.0\n472\tDrama\t1.0\n473\tComedy\t1.0\n473\tWar\t1.0\n474\tAction\t1.0\n474\tThriller\t1.0\n475\tDrama\t1.0\n476\tComedy\t1.0\n476\tDrama\t1.0\n477\tDrama\t1.0\n477\tMusical\t1.0\n478\tComedy\t1.0\n478\tCrime\t1.0\n478\tDrama\t1.0\n479\tAction\t1.0\n479\tCrime\t1.0\n479\tThriller\t1.0\n480\tAction\t1.0\n480\tAdventure\t1.0\n480\tSci-Fi\t1.0\n480\tThriller\t1.0\n481\tDrama\t1.0\n481\tThriller\t1.0\n482\tCrime\t1.0\n482\tDrama\t1.0\n482\tThriller\t1.0\n483\tDrama\t1.0\n484\tAdventure\t1.0\n484\tChildren\t1.0\n\n\u003cfont color\u003dred\u003eResults are limited by 1000.\u003c/font\u003e"
+      },
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "dateUpdated": "Jun 23, 2016 8:34:19 PM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714059496_1367598798",
+      "id": "20160623-203419_687592538",
+      "dateCreated": "Jun 23, 2016 8:34:19 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "MovieLens To DB",
+  "id": "2BN42SCC7",
+  "angularObjects": {
+    "2BNTUCZY9": [],
+    "2BR35CAAY": [],
+    "2BRV7JKUH": [],
+    "2BPY7DFTV": [],
+    "2BN8E2KUT": [],
+    "2BMZT71S3": [],
+    "2BPZNUUGB": [],
+    "2BQF1EWMT": [],
+    "2BPVUY6QV": [],
+    "2BP8VQQUP": [],
+    "2BRMK1MMP": [],
+    "2BN67BXG6": [],
+    "2BP4228GP": [],
+    "2BPAMJPFK": []
+  },
+  "config": {},
+  "info": {}
+}

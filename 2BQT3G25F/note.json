@@ -1,0 +1,98 @@
+{
+  "paragraphs": [
+    {
+      "title": "notebook2Py",
+      "text": "import sys, json\n\n\ndef convert(input_path, output_path):\n    br \u003d \"\\r\\n\"\n    with open(input_path, \"r\") as reader, open(output_path, \"w\") as writer:\n        f \u003d json.load(reader)\n\n        for p in f[\"paragraphs\"]:\n            if p.get(\"title\"):\n                writer.write(\"# \" + p[\"title\"] + br)\n\n            if p.get(\"text\"):\n                text \u003d p.get(\"text\")\n                if text.startswith(\"%md\"):\n                    text \u003d text[4:]\n                    writer.write(\u0027\"\"\"\u0027 + br + text + br + \u0027\"\"\"\u0027 + br)\n                else:\n                    writer.write(text + br + br + br)\n\n        writer.flush()\n\n\nif __name__ \u003d\u003d \"__main__\":\n    if len(sys.argv) \u003d\u003d 3:\n        convert(*sys.argv[1:])\n    else:\n        sys.stderr.write(\"The first argument is input json path, the second argument is output path\\r\\n\")\n",
+      "dateUpdated": "Jun 24, 2016 10:14:57 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466801959244_-1369054403",
+      "id": "20160624-205919_1275774946",
+      "dateCreated": "Jun 24, 2016 8:59:19 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Restart",
+      "text": "%sh\n/usr/lib/zeppelin/0.5.6/bin/zeppelin-daemon.sh restart",
+      "dateUpdated": "Jun 24, 2016 10:14:00 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sh",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466806268921_531011857",
+      "id": "20160624-221108_210232827",
+      "result": "org.apache.zeppelin.interpreter.InterpreterException: org.apache.thrift.transport.TTransportException: java.net.ConnectException: Connection refused",
+      "dateCreated": "Jun 24, 2016 10:11:08 PM",
+      "dateStarted": "Jun 24, 2016 10:14:00 PM",
+      "dateFinished": "Jun 24, 2016 10:14:00 PM",
+      "status": "ERROR",
+      "errorMessage": "java.net.ConnectException: Connection refused\n\tat java.net.PlainSocketImpl.socketConnect(Native Method)\n\tat java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)\n\tat java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)\n\tat java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)\n\tat java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)\n\tat java.net.Socket.connect(Socket.java:589)\n\tat org.apache.thrift.transport.TSocket.open(TSocket.java:182)\n\tat org.apache.zeppelin.interpreter.remote.ClientFactory.create(ClientFactory.java:51)\n\tat org.apache.zeppelin.interpreter.remote.ClientFactory.create(ClientFactory.java:37)\n\tat org.apache.commons.pool2.BasePooledObjectFactory.makeObject(BasePooledObjectFactory.java:60)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:861)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:435)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:363)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterProcess.getClient(RemoteInterpreterProcess.java:139)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getFormType(RemoteInterpreter.java:266)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.getFormType(LazyOpenInterpreter.java:104)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:198)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:169)\n\tat org.apache.zeppelin.scheduler.RemoteScheduler$JobRunner.run(RemoteScheduler.java:322)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466806401677_284154661",
+      "id": "20160624-221321_1072704437",
+      "dateCreated": "Jun 24, 2016 10:13:21 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Helper",
+  "id": "2BQT3G25F",
+  "angularObjects": {
+    "2BNTUCZY9": [],
+    "2BR35CAAY": [],
+    "2BRV7JKUH": [],
+    "2BPY7DFTV": [],
+    "2BN8E2KUT": [],
+    "2BMZT71S3": [],
+    "2BPZNUUGB": [],
+    "2BQF1EWMT": [],
+    "2BPVUY6QV": [],
+    "2BP8VQQUP": [],
+    "2BRMK1MMP": [],
+    "2BN67BXG6": [],
+    "2BP4228GP": [],
+    "2BPAMJPFK": []
+  },
+  "config": {},
+  "info": {}
+}

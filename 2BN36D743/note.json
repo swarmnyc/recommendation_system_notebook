@@ -1,0 +1,91 @@
+{
+  "paragraphs": [
+    {
+      "text": "%sql\nselect * from video_features",
+      "dateUpdated": "Jun 24, 2016 4:47:10 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 294.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "name",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "description",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "yAxis": {
+              "name": "description",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sql",
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714028320_-1177343321",
+      "id": "20160623-203348_1576507649",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "createdAt\tfeature\tscore\tsource\tvideoId\n2016-06-24 16:36:40.108629\tRunning back\t1.0\ttext\t676013123820\n2016-06-24 16:36:40.108611\tCBS Sports\t0.63\ttext\t676013123820\n2016-06-24 16:36:40.108623\tDallas Cowboys\t0.998\ttext\t676013123820\n"
+      },
+      "dateCreated": "Jun 23, 2016 8:33:48 PM",
+      "dateStarted": "Jun 24, 2016 4:47:10 PM",
+      "dateFinished": "Jun 24, 2016 4:47:11 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "dateUpdated": "Jun 23, 2016 8:33:48 PM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714028320_-1177343321",
+      "id": "20160623-203348_301149927",
+      "dateCreated": "Jun 23, 2016 8:33:48 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Test",
+  "id": "2BN36D743",
+  "angularObjects": {
+    "2BNTUCZY9": [],
+    "2BR35CAAY": [],
+    "2BRV7JKUH": [],
+    "2BPY7DFTV": [],
+    "2BN8E2KUT": [],
+    "2BMZT71S3": [],
+    "2BPZNUUGB": [],
+    "2BQF1EWMT": [],
+    "2BPVUY6QV": [],
+    "2BP8VQQUP": [],
+    "2BRMK1MMP": [],
+    "2BN67BXG6": [],
+    "2BP4228GP": [],
+    "2BPAMJPFK": []
+  },
+  "config": {},
+  "info": {}
+}

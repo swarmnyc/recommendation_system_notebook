@@ -1,0 +1,514 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n## Create Hive Tables For CVS Data\n\n1. user_scores(userId, videoId, score, createdAt), score is from 0 to 6\n2. user_features(userId, feature, score, sum, count)\n3. videos(userid, title, channels, imageUrl, videoUrl, description, processed, startAt, endAt)\n4. videos_features(videoId, feature, score, source, createdAt), score is from 0 to 1\n5. features(name, types, relatives, wikiId, description, detailedDescription, processed, createdAt),\n   relatives is dict\u003c name string, score int \u003e format, score is from 0 to 1\n\nDatetime is in UTC zone\nA data might need to be processed multiple times, so processed is int,0 is unpreocessed\n",
+      "dateUpdated": "Jun 24, 2016 10:10:47 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "editorHide": false,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090279_932878514",
+      "id": "20160623-203450_963404261",
+      "result": "org.apache.zeppelin.interpreter.InterpreterException: org.apache.thrift.transport.TTransportException: java.net.ConnectException: Connection refused",
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 10:10:47 PM",
+      "dateFinished": "Jun 24, 2016 10:10:47 PM",
+      "status": "ERROR",
+      "errorMessage": "java.net.ConnectException: Connection refused\n\tat java.net.PlainSocketImpl.socketConnect(Native Method)\n\tat java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)\n\tat java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)\n\tat java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)\n\tat java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)\n\tat java.net.Socket.connect(Socket.java:589)\n\tat org.apache.thrift.transport.TSocket.open(TSocket.java:182)\n\tat org.apache.zeppelin.interpreter.remote.ClientFactory.create(ClientFactory.java:51)\n\tat org.apache.zeppelin.interpreter.remote.ClientFactory.create(ClientFactory.java:37)\n\tat org.apache.commons.pool2.BasePooledObjectFactory.makeObject(BasePooledObjectFactory.java:60)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:861)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:435)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:363)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterProcess.getClient(RemoteInterpreterProcess.java:139)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getFormType(RemoteInterpreter.java:266)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.getFormType(LazyOpenInterpreter.java:104)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:198)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:169)\n\tat org.apache.zeppelin.scheduler.RemoteScheduler$JobRunner.run(RemoteScheduler.java:322)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "import datetime as dt, time\nimport requests\nimport logging\nfrom pyspark.sql import Row\n\nlog \u003d logging.getLogger(\u0027cbs\u0027)\nlog.setLevel(logging.ERROR)\nif len(log.handlers) \u003d\u003d 0:\n    log.addHandler(logging.StreamHandler())\n\nclass Configs:\n    scoreThreshold \u003d 0.5\n    elST \u003d 0.1\n    kgST \u003d 0.5\n    vrST \u003d 0.5\n    elKey \u003d \"4165dd1a44804ffbb205c20e2b07bb62\"\n    kgKey \u003d \"AIzaSyCyamOkon7kuuT1bjSNWJtHs0TNJ4RiL5Q\"\n    vrKey \u003d \"20dc4bda395295983d58443d88398b7090701e21\"",
+      "dateUpdated": "Jun 24, 2016 4:32:13 PM",
+      "config": {
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090279_932878514",
+      "id": "20160623-203450_633087706",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 4:32:13 PM",
+      "dateFinished": "Jun 24, 2016 4:32:13 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "def drop_all():\n    sqlContext.sql(\"Drop Table user_scores\")\n    sqlContext.sql(\"Drop Table user_preferences\")\n    sqlContext.sql(\"Drop Table videos\")\n    sqlContext.sql(\"Drop Table videos_features\")\n    sqlContext.sql(\"Drop Table features\")",
+      "dateUpdated": "Jun 23, 2016 10:28:58 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090279_932878514",
+      "id": "20160623-203450_51030056",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 23, 2016 10:28:58 PM",
+      "dateFinished": "Jun 23, 2016 10:28:58 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load Local DB",
+      "text": "tables \u003d sqlContext.tables().map(lambda r:r[0]).collect()\n\nfeatures \u003d dict()\nvideos \u003d dict()\nvideo_features \u003d dict()\nuser_scores \u003d dict()\nuser_features \u003d dict()\n\nfeatureIgnores \u003d [\"CBS Sports\"]\n\nif \"videos\" in tables:\n    videos \u003d sqlContext.table(\"videos\").map(lambda row: (row.videoId, row.asDict())).collectAsMap()\n\nif \"features\" in tables:\n    features \u003d sqlContext.table(\"features\").map(lambda row: (row.name, row.asDict())).collectAsMap()\n\nif \"video_features\" in tables:\n    video_features \u003d sqlContext.table(\"video_features\").map(lambda row: ((row.videoId, row.feature), row.asDict())).groupByKey().mapValues(list).collectAsMap()\n    \nif \"user_scores\" in tables:\n    user_scores \u003d sqlContext.table(\"user_scores\").map(lambda row: ((row[\"userId\"], row[\"videoId\"]), row.asDict())).collectAsMap()\n    \nif \"user_features\" in tables:\n    user_features \u003d sqlContext.table(\"user_features\").map(lambda row: ((row[\"userId\"], row[\"feature\"]), row.asDict())).collectAsMap()",
+      "dateUpdated": "Jun 24, 2016 9:07:04 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466720417344_1474750802",
+      "id": "20160623-222017_782950607",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 10:20:17 PM",
+      "dateStarted": "Jun 24, 2016 7:22:38 PM",
+      "dateFinished": "Jun 24, 2016 7:22:40 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Dump Videos Data From CBS",
+      "text": "def fetch_video_channels():\n    channels \u003d set([\"videos\"])\n    resp \u003d requests.get(\n        \"http://www.cbssports.com/data/common/fetch?input\u003djson\u0026as\u003djson\u0026dat_file_path\u003d%2Fvideo%2Fplayer%2Fott%2Fchannels.json\")\n    \n    if resp.status_code \u003d\u003d 200:\n        for page in resp.json():\n            if \"channel\" not in page:\n                continue\n    \n            for channel in page[\"channel\"]:\n                channels.add(channel[\"id\"])\n    else:\n        log.error(\"Load Video Channels Error, code\u003d%s, content\u003d%s\", resp.status_code, resp.text)\n    \n    return channels\n\ndef fetch_videos(channel, start, size, stopTime):\n    log.info(\"Start Loading Videos\")\n    params \u003d {\"as\":\"json\", \"sources\":1, \"type\":\"MP4\", \"limit\": size, \"offset\":start, \"sortby\": \"start_time\" }\n    resp \u003d requests.get(\"http://www.cbssports.com/data/video/player/getVideos/1_1/\" + channel, params\u003dparams)\n    log.info(\"Finish Loading Videos, status_code \u003d %s\", resp.status_code)\n    if resp.status_code \u003d\u003d 200:\n        result \u003d resp.json()\n        for d in result:\n            if int(d[\"start_time\"]) \u003c stopTime:\n                return\n                \n            if d[\"pcid\"] not in videos:\n                video \u003d dict(videoId\u003dd[\"pcid\"], title\u003dd[\"title\"], imageUrl\u003dd[\"large_thumbnail\"],\n                             channels\u003d[channel], description\u003dd[\"description\"], processed\u003d0,\n                             length\u003dd[\"length\"],\n                             startAt\u003ddt.datetime.fromtimestamp(float(d[\"start_time\"])),\n                             endAt\u003ddt.datetime.fromtimestamp(float(d[\"end_time\"])))\n\n                if \"sources\" in d and len(d[\"sources\"]) \u003e 0:\n                    video[\"videoUrl\"] \u003d d[\"sources\"][-1][\"url\"]\n                    \n                videos[video[\"videoId\"]] \u003d video\n            elif channel not in videos[d[\"pcid\"]][\"channels\"]:\n                videos[d[\"pcid\"]][\"channels\"].append(channel)\n        \n        nextStart \u003d start + size \n        if len(result) \u003e\u003d size:\n            fetch_videos(channel, start+size, size, stopTime)\n            \n    else:\n        log.error(\"Load Videos Error, channel\u003d%s, code\u003d%s, content\u003d%s\", channel, resp.status_code, resp.text)",
+      "dateUpdated": "Jun 24, 2016 7:38:53 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466721086083_-1242376055",
+      "id": "20160623-223126_1892009106",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 10:31:26 PM",
+      "dateStarted": "Jun 24, 2016 4:32:43 PM",
+      "dateFinished": "Jun 24, 2016 4:32:43 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "stopTime \u003d time.mktime(dt.datetime(2015, 1, 1).timetuple())\n\nfor channel in fetch_video_channels():\n    fetch_videos(channel, 0, 100, stopTime)\n    \nsqlContext.createDataFrame(videos.values()).write.saveAsTable(\"videos\",mode\u003d\"overwrite\")",
+      "dateUpdated": "Jun 24, 2016 4:35:06 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466721273291_-525144453",
+      "id": "20160623-223433_1202936115",
+      "dateCreated": "Jun 23, 2016 10:34:33 PM",
+      "dateStarted": "Jun 24, 2016 3:34:17 PM",
+      "dateFinished": "Jun 24, 2016 3:37:27 PM",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Read Watch Log Data",
+      "text": "from collections import Counter\n\n# read data and transfer to [{ (userId, videoId) : eventId }]\nEvents \u003d sc.broadcast([\"videoStart\", \"firstQuartile\", \"midpoint\", \"thirdQuartile\", \"videoEnded\"])\nwatchLogsRaw \u003d sc.textFile(\"/cbs/watch_logs.csv\")\n\n# raw data\u0027s header is\n# post_visitor_high_id,post_visitor_low_id,page_event_var2_desc,post_evar31_desc,page_nm,event_dt_ut,geo_country_cd,geo_region_cd,geo_city_nm,geo_zip_cd\nheader \u003d watchLogsRaw.first()\nwatchLogsRaw \u003d watchLogsRaw.filter(lambda l: l !\u003d header) \\\n    .map(lambda l: l.split(\",\")) \\\n    .filter(lambda l: l[2] in Events.value).cache()\n\nwatchLogs \u003d watchLogsRaw.map(lambda l: ((l[0], l[3]), l[2]))\n\n# group value by value, so because [{ (userId, VideoId) : [{ eventId : Counter }] }]\ngroupData \u003d watchLogs.groupByKey().mapValues(lambda x: Counter(x))\n\ndef calculateScore(d):\n    \"\"\"\n    The distinct events are the main scores and the if a user watch many times\n    The score will slight increases up to 6\n    For example, a user has a record\n     [{u\u0027firstQuartile\u0027: 3, u\u0027videoStart\u0027: 2, u\u0027midpoint\u0027: 2, u\u0027thirdQuartile\u0027: 1, u\u0027videoEnded\u0027: 1}]\n\n    The main score is 5 and the point number is\n    Sum(count-1) / 10 \u003d (2+1+1) / 10 \u003d 0.4\n    So it scores 5.4\n\n    but if there is no event52 the score will be zero.\n\n    10 is make up number for 2 rounds(5+5)\n    \"\"\"\n    key_pair \u003d d[0]\n    events \u003d d[1]\n    score \u003d 0.\n    if events.get(u\"videoStart\") !\u003d None:\n        distinctEvent \u003d len(events)\n        otherEvents \u003d sum(events.values()) - distinctEvent\n        pointNumber \u003d otherEvents / 10.\n        score \u003d min(distinctEvent + pointNumber, 6.)\n\n    return Row(userId\u003dkey_pair[0], videoId\u003dkey_pair[1], score\u003dscore, createdAt\u003ddt.datetime.now())\n\n\nresult \u003d groupData.map(calculateScore).cache()\n\n# save to db\nsqlContext.createDataFrame(result).write.saveAsTable(\"user_scores\", mode\u003d\"overwrite\")\n\nuser_scores \u003d result.map(lambda row: ((row[\"userId\"], row[\"videoId\"]), row.asDict())).collectAsMap()",
+      "dateUpdated": "Jun 24, 2016 4:33:17 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090279_932878514",
+      "id": "20160623-203450_398098307",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 4:02:51 PM",
+      "dateFinished": "Jun 24, 2016 4:03:06 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "extract Videos Features via Title and Description",
+      "text": "def extract_video_text_features(video):\n    \"\"\"\n    Call microsoft entity linking with video\u0027s title and description to get info and\n    save to videoFeatures and features\n    \"\"\"\n    log.info(\"Start Entity Linking, videoId\u003d%s, title\u003d%s, description\u003d%s\", video[\"videoId\"], video[\"title\"],\n             video[\"description\"])\n    data \u003d video[\"title\"] + \"\\n\" + video[\"description\"]\n    resp \u003d requests.post(\"https://api.projectoxford.ai/entitylinking/v1.0/link\", data\u003ddata,\n                    headers\u003d{\"Ocp-Apim-Subscription-Key\": Configs.elKey,\n                             \"Content-Type\": \"text/plain\"})\n\n    log.info(\"Finish Entity Linking, status_code \u003d %s\", resp.status_code)\n\n    if resp.status_code \u003d\u003d 200:\n        video[\"processed\"] |\u003d 1\n\n        for entity in resp.json()[\"entities\"]:\n            if entity[\"score\"] \u003c Configs.elST:\n                continue\n                    \n            video_features[(video[\"videoId\"], entity[\"name\"])] \u003d \\\n            dict(videoId\u003dvideo[\"videoId\"], feature\u003dentity[\"name\"], score\u003dentity[\"score\"], source\u003d\"text\" ,createdAt\u003ddt.datetime.utcnow())\n\n            if entity[\"name\"] not in features:\n                features[entity[\"name\"]] \u003d dict(name\u003dentity[\"name\"],\n                                                wikiId\u003dentity[\"wikipediaId\"],\n                                                processed\u003d0, createdAt\u003ddt.datetime.utcnow())\n    else:\n        log.error(\"Entity Linking Error, video\u003d%s, code\u003d%s, content\u003d%s\", video[\"videoId\"], resp.status_code, resp.text)",
+      "dateUpdated": "Jun 24, 2016 7:37:46 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "tableHide": false,
+        "editorHide": false,
+        "lineNumbers": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090280_930954769",
+      "id": "20160623-203450_2038482018",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 7:37:46 PM",
+      "dateFinished": "Jun 24, 2016 7:37:46 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Extract Videos Features Via Thumbnail",
+      "text": "def extract_video_image_features(video):\n    \"\"\"\n    Call IBM Visual Recognition with video\u0027s thumbnail to get info and\n    save to videoFeatures and features\n    \"\"\"\n    if not video[\"imageUrl\"].strip():\n        video[\"processed\"] |\u003d 2\n        return\n        \n    log.info(\"Start IBM Visual Recognition, videoId\u003d%s, title\u003d%s, description\u003d%s\", video[\"videoId\"], video[\"title\"],\n             video[\"description\"])\n    params \u003d dict(api_key\u003dConfigs.vrKey, url\u003dvideo[\"imageUrl\"], version\u003d\"2016-05-17\")\n    resp \u003d requests.get(\"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/detect_faces\", params\u003dparams)\n\n    log.info(\"Finish IBM Visual Recognition, status_code \u003d %s\", resp.status_code)\n\n    if resp.status_code \u003d\u003d 200:\n        video[\"processed\"] |\u003d 2\n        json \u003d resp.json()\n        if \"images\" not in json or len(json[\"images\"]) \u003d\u003d 0:\n            return\n\n        image \u003d json[\"images\"][0]\n\n        if \"faces\" not in image:\n            return\n\n        for face in image[\"faces\"]:\n            if \"identity\" not in face:\n                continue\n\n            identity \u003d face[\"identity\"]\n\n            if identity[\"score\"] \u003c Configs.vrST:\n                continue\n\n            video_features[(video[\"videoId\"], identity[\"name\"])] \u003d \\\n            dict(videoId\u003dvideo[\"videoId\"], feature\u003didentity[\"name\"], score\u003didentity[\"score\"], source\u003d\"image\", createdAt\u003ddt.datetime.utcnow())\n\n            if identity[\"name\"] not in features:\n                features[identity[\"name\"]] \u003d dict(name\u003didentity[\"name\"],\n                                                  wikiId\u003d\"\",\n                                                  processed\u003d0, createdAt\u003ddt.datetime.utcnow())\n    else:\n        log.error(\"IBM Visual Recognition Error, video\u003d%s, code\u003d%s, content\u003d%s\", video[\"videoId\"], resp.status_code, resp.text)",
+      "dateUpdated": "Jun 24, 2016 8:22:47 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090280_930954769",
+      "id": "20160623-203450_1973963879",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 8:22:47 PM",
+      "dateFinished": "Jun 24, 2016 8:22:47 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Fetch Feature\u0027s Information",
+      "text": "def extract_feature_relatives(feature):\n    \"\"\"\n    After use microsoft entity linking, we can find features,\n    then we use Google Knowledge Graph to find feature\u0027s details,\n    if the feature\u0027s type is Person, we will try to find his further information\n    \"\"\"\n    log.info(\"Start Knowledge Graph, name\u003d%s\", feature[\"name\"])\n    resp \u003d requests.get(\"https://kgsearch.googleapis.com/v1/entities:search\",\n                   params\u003ddict(query\u003dfeature[\"name\"], key\u003dConfigs.kgKey, limit\u003d1), verify\u003dFalse)\n\n    log.info(\"Finish Knowledge Graph, status_code \u003d %s\", resp.status_code)\n\n    if resp.status_code \u003d\u003d 200:\n        feature[\"processed\"] |\u003d 1\n        result \u003d resp.json()\n        if \"itemListElement\" not in result:\n            return\n            \n        items \u003d result[\"itemListElement\"]\n        if len(items) \u003e 0:\n            info \u003d items[0][\"result\"]\n            feature[\"types\"] \u003d filter(lambda t: t !\u003d \"Thing\", info[\"@type\"])\n            if \"description\" in info:\n                feature[\"description\"] \u003d info[\"description\"]\n                \n            if \"detailedDescription\" in info:\n                dd \u003dinfo[\"detailedDescription\"]\n                if \"articleBody\" in dd:\n                    feature[\"detailedDescription\"] \u003d dd[\"articleBody\"]\n\n                if \"Person\" in feature[\"types\"]:\n                    #if the entity is person, extract again\n                    extract_relative_features(feature)\n    else:\n        log.error(\"Knowledge Graph Error, feature\u003d%s, code\u003d%s, content\u003d%s\", feature[\"name\"], resp.status_code, resp.text)",
+      "dateUpdated": "Jun 24, 2016 7:40:55 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "lineNumbers": false,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090280_930954769",
+      "id": "20160623-203450_1661145338",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 7:40:55 PM",
+      "dateFinished": "Jun 24, 2016 7:40:55 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "fetch Person feature\u0027s Features",
+      "text": "def extract_relative_features(feature):\n    \"\"\"\n    this function only for players,\n    when we use Google Knowledge Graph find the feature\u0027s type is Person,\n    then we use Microsoft Entity Linking to find more features and try to find his team.\n    \"\"\"\n    log.info(\"Start Entity Linking 2, feature\u003d%s, detailedDescription\u003d%s\", feature[\"name\"],\n             feature[\"detailedDescription\"])\n\n    resp \u003d requests.post(\"https://api.projectoxford.ai/entitylinking/v1.0/link\", data\u003dfeature[\"detailedDescription\"].encode(\"utf-8\"),\n                    headers\u003d{\"Ocp-Apim-Subscription-Key\": Configs.elKey,\n                             \"Content-Type\": \"text/plain\"})\n\n    log.info(\"Finish Entity Linking 2, status_code \u003d %s, json\u003d%s\", resp.status_code, resp.json())\n\n    if resp.status_code \u003d\u003d 200:\n        feature[\"processed\"] |\u003d 2\n        es \u003d dict()\n        for entity in resp.json()[\"entities\"]:\n            if entity[\"score\"] \u003c Configs.elST or feature[\"name\"] \u003d\u003d entity[\"name\"]:\n                continue\n                \n            es[entity[\"name\"]] \u003d entity[\"score\"]\n\n            if entity[\"name\"] not in features:\n                features[entity[\"name\"]] \u003d dict(name\u003dentity[\"name\"],\n                                                wikiId\u003dentity[\"wikipediaId\"],\n                                                processed\u003d0, createdAt\u003ddt.datetime.utcnow())\n\n        feature[\"relatives\"] \u003d es\n    else:\n        log.error(\"Entity Linking 2 Error, feature\u003d%s, code\u003d%s, content\u003d%s\", feature[\"name\"], resp.status_code, resp.text)",
+      "dateUpdated": "Jun 24, 2016 7:40:51 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "lineNumbers": false,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090280_930954769",
+      "id": "20160623-203450_1540265575",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 7:40:51 PM",
+      "dateFinished": "Jun 24, 2016 7:40:51 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Execution",
+      "text": "def execute(targetVideos, targetFeatures, s1\u003dTrue, s2\u003dTrue, s3\u003dTrue):\n    if s1:\n        for video in filter(lambda row:row[\"processed\"]\u00261!\u003d1, targetVideos):\n            extract_video_text_features(video)\n            \n    if s2:\n        for video in filter(lambda row:row[\"processed\"]\u00262!\u003d2, targetVideos):\n            extract_video_image_features(video)\n            \n    if s3:\n        for feature in filter(lambda row:row[\"processed\"]\u00261!\u003d1, targetFeatures):\n            extract_feature_relatives(feature)",
+      "dateUpdated": "Jun 24, 2016 8:25:32 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090280_930954769",
+      "id": "20160623-203450_605223592",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 8:10:30 PM",
+      "dateFinished": "Jun 24, 2016 8:10:30 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Execution And Save Data",
+      "text": "execute(videos.values(), features.values(), True, True, True)\n\nsqlContext.createDataFrame(videos.values()).write.saveAsTable(\"videos\",mode\u003d\"overwrite\")\n\nsqlContext.createDataFrame(video_features.values()).write.saveAsTable(\"video_features\",mode\u003d\"overwrite\")\n\nfrom pyspark.sql.types import *\nfeaturesSchema \u003d StructType().add(\"name\",StringType()) \\\n                             .add(\"description\",StringType()) \\\n                             .add(\"detailedDescription\",StringType()) \\\n                             .add(\"wikiId\", StringType()) \\\n                             .add(\"createdAt\",TimestampType()) \\\n                             .add(\"relatives\",MapType(StringType(), FloatType())) \\\n                             .add(\"types\" ,ArrayType(StringType())) \\\n                             .add(\"processed\",IntegerType()) \n\nsqlContext.createDataFrame(map(lambda r: (r.get(\"name\"), r.get(\"description\"), r.get(\"detailedDescription\"), r.get(\"wikiId\"), r.get(\"createdAt\"), r.get(\"relatives\"), r.get(\"types\"), r.get(\"processed\")), features.values()), featuresSchema).write.saveAsTable(\"features\",mode\u003d\"overwrite\")",
+      "dateUpdated": "Jun 24, 2016 8:25:42 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "tableHide": false,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466714090280_930954769",
+      "id": "20160623-203450_1754335102",
+      "dateCreated": "Jun 23, 2016 8:34:50 PM",
+      "dateStarted": "Jun 24, 2016 8:25:42 PM",
+      "dateFinished": "Jun 24, 2016 8:43:40 PM",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "User X Video",
+      "text": "",
+      "dateUpdated": "Jun 24, 2016 9:06:22 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "title": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1466729058534_1191124559",
+      "id": "20160624-004418_526269387",
+      "dateCreated": "Jun 24, 2016 12:44:18 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "CBS To DB",
+  "id": "2BRAWUN79",
+  "angularObjects": {
+    "2BR35CAAY": [],
+    "2BP8VQQUP": [],
+    "2BP4228GP": []
+  },
+  "config": {},
+  "info": {}
+}
