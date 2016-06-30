@@ -30,9 +30,45 @@
       "progressUpdateIntervalMs": 500
     },
     {
+      "title": "Reload Data",
+      "text": "from pyspark.sql.context import HiveContext\n\nsqlContext \u003d HiveContext(sc)\nsqlContext.read.parquet(\"/tmp/hive/hive/warehouse/videos\").write.saveAsTable(\"videos\",mode\u003d\"overwrite\")",
+      "dateUpdated": "Jun 30, 2016 10:37:07 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467325948127_1633469641",
+      "id": "20160630-223228_1194359031",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 30, 2016 10:32:28 PM",
+      "dateStarted": "Jun 30, 2016 10:37:07 PM",
+      "dateFinished": "Jun 30, 2016 10:37:22 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
       "title": "Restart",
       "text": "%sh\n/usr/lib/zeppelin/0.5.6/bin/zeppelin-daemon.sh restart",
-      "dateUpdated": "Jun 24, 2016 10:14:00 PM",
+      "dateUpdated": "Jun 30, 2016 8:56:10 AM",
       "config": {
         "colWidth": 12.0,
         "graph": {

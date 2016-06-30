@@ -1,0 +1,343 @@
+{
+  "paragraphs": [
+    {
+      "title": "Top 100 active User ",
+      "text": "%sql\nSELECT userId, COUNT(*) WatchCount FROM user_scores\nGROUP BY userId\nOrder BY COUNT(*) DESC\nLIMIT 100",
+      "dateUpdated": "Jun 30, 2016 6:10:08 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "userId",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "WatchCount",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "userId",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": false,
+        "editorMode": "ace/mode/sql",
+        "title": true,
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467226403299_713477154",
+      "id": "20160629-185323_525109844",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "userId\tWatchCount\n688435115\t163\n503788871\t151\n3477223272\t145\n3883379439\t115\n1555466411\t111\n3113763519\t101\n1169768695\t100\n1110541394\t100\n652707297\t98\n913633870\t97\n4126679577\t97\n1123803403\t93\n4199133037\t93\n4215885266\t92\n307315638\t91\n4075939851\t90\n1706778276\t85\n1739639101\t84\n2362121925\t82\n922754881\t81\n1598790656\t79\n693490052\t76\n1158571001\t73\n3809459032\t73\n3826955965\t71\n4141703722\t70\n3811592990\t69\n3398381761\t68\n1038294086\t68\n465051683\t68\n2267838700\t67\n927945586\t66\n353073200\t66\n3565399061\t63\n683393522\t62\n3588600650\t61\n2464150819\t60\n1331329868\t58\n4249572311\t58\n2580616081\t58\n1424816232\t57\n3032691517\t57\n3375320536\t56\n3094253055\t56\n2449531339\t56\n3156727568\t56\n1046972274\t55\n203177848\t54\n3368948891\t54\n3670963336\t54\n3478895493\t54\n1576211614\t54\n2612912267\t54\n3222277745\t54\n1293756046\t54\n1094386780\t54\n1624805213\t54\n3449682712\t54\n1285707519\t53\n847693965\t53\n46045714\t53\n4150181732\t53\n3425178124\t53\n1033216061\t53\n3815411539\t53\n1749283486\t53\n3562610590\t53\n1969715008\t53\n2549053175\t52\n189836960\t52\n884788898\t52\n2184301294\t52\n780509456\t52\n1565440587\t52\n3076956502\t52\n3945401875\t52\n1350175563\t52\n2372720271\t52\n2605360647\t52\n1953644154\t51\n2823857074\t51\n3228674363\t51\n1512466409\t51\n3208130255\t51\n3807138637\t51\n1464878460\t51\n3218744215\t51\n2045089522\t51\n846080610\t50\n3377836869\t50\n482418658\t50\n1479692876\t50\n2747463458\t50\n3664011571\t50\n2979469743\t50\n1555127723\t50\n891534686\t50\n2338925062\t50\n3047304332\t50\n236407916\t50\n"
+      },
+      "dateCreated": "Jun 29, 2016 6:53:23 PM",
+      "dateStarted": "Jun 29, 2016 6:57:14 PM",
+      "dateFinished": "Jun 29, 2016 6:57:17 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "userId \u003d \"236407916\"\n#userId \u003d \"688435115\"\n#userId \u003d \"503788871\"",
+      "dateUpdated": "Jun 30, 2016 7:06:49 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467219514250_1807478171",
+      "id": "20160629-165834_1846564419",
+      "result": {
+        "code": "ERROR",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 29, 2016 4:58:34 PM",
+      "dateStarted": "Jun 30, 2016 7:06:36 PM",
+      "dateFinished": "Jun 30, 2016 7:06:46 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Watch\u0027s Videos",
+      "text": "watchVideos \u003d sqlContext.sql(\"select v.videoId, v.title, us.score, v.imageUrl, v.videoUrl from user_scores us, videos v where us.videoId \u003d v.videoId and us.userId\u003d\u0027{0}\u0027\".format(userId)).collect()\n\nprint \"%table\"\nprint \"{0}\\t{1}\\t{2}\\t{3}\\t{4}\".format(\"VideoId\", \"Title\", \"Score\", \"features\", \"image\")\nfor r in watchVideos:\n    features \u003d \"\u003cbr/\u003e\".join(sqlContext.sql(\"select feature, score from video_features where videoId\u003d\u0027{0}\u0027\".format(r[\"videoId\"])) \\\n    .map(lambda r:\"({0},{1})\".format(r[\"feature\"], r[\"score\"])).collect())\n    print \"{0}\\t{1}\\t{2}\\t%html {3}\\t%html \u003cimg src\u003d\u0027{4}\u0027 width\u003d\u0027250px\u0027/\u003e\".format(r[\"videoId\"], r[\"title\"], r[\"score\"], features, r[\"imageUrl\"])",
+      "dateUpdated": "Jun 30, 2016 7:02:41 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 604.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "VideoId",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "Title",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "VideoId",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "Title",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467219607951_149164439",
+      "id": "20160629-170007_1424644459",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "VideoId\tTitle\tScore\tfeatures\timage\n684472387718\tCan Bortles Repeat Fantasy Success in 2016?\t5.0\t%html (Blake Bortles,0.996)\u003cbr/\u003e(Fantasy,0.161)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/bortles_still_1062250_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677136963588\tFantasy Outlook: Indianapolis Colts\t5.0\t%html (Fantasy,0.804)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/LUCK_THUMB_1057090_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677070403526\tFantasy Outlook: Los Angeles Rams\t5.0\t%html (Fantasy,0.98)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/GURLEY_THUMB_1056878_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677115459631\tFantasy Outlook: Washington Redskins\t4.0\t%html (Washington Redskins,1.0)\u003cbr/\u003e(Fantasy,0.826)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/COUSINS_THUMB_1057025_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677083203803\tFantasy Outlook: Buffalo Bills\t5.0\t%html (Fantasy,0.88)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/BUF2_thumb_1056927_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677086275863\tFantasy Outlook: San Diego Chargers\t5.0\t%html (Fantasy,0.973)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Rivers_THUMB_1056952_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677125699740\tFantasy Outlook: Minnesota Vikings\t5.0\t%html (Fantasy,0.991)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/PETERSON_THUMB_1057037_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677116995583\tFantasy Outlook: New Orleans Saints\t5.0\t%html (Fantasy,0.973)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/NLOA2_thumb_1057029_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676017731940\tWill Fuller\u0027s fantasy impact on the Texans\t5.0\t%html (CBS,0.996)\u003cbr/\u003e(Houston Texans,0.901)\u003cbr/\u003e(Wide receiver,1.0)\u003cbr/\u003e(Sports radio,0.658)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/FULLER2_1056202_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677097027781\tFantasy Outlook: Jacksonville Jaguars\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/BORTLES_THUMB_1056991_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677134915794\tFantasy Outlook: Seattle Seahawks\t5.0\t%html (Fantasy,0.933)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/WILSON_THUMB_1057093_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677069379836\tFantasy Outlook: Arizona Cardinals\t5.0\t%html (Fantasy,0.902)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/AZ2_thumb_1056883_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n685348931723\tFantasy Football Rookie-only draft\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DOCTSON_THUMB_1062944_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676017731836\tLaquon Treadwell\u0027s fantasy impact on the Vikings\t5.0\t%html (CBS Sports,0.81)\u003cbr/\u003e(Minnesota Vikings,1.0)\u003cbr/\u003e(Wide receiver,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/TREADWELL2_1056201_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677064771994\tFantasy Outlook: Kansas City Chiefs\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/CHIEFS_THUMB_1056870_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677132867569\tFantasy Outlook: Cincinnati Bengals\t5.0\t%html (Fantasy,0.493)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/GREEN_THUMB_1057067_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677093955730\tFantasy Outlook: Miami Dolphins\t5.0\t%html (Fantasy,0.895)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Tannehil_THUMB_1056983_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676012099960\tCorey Coleman\u0027s fantasy impact on the Browns\t5.0\t%html (CBS Sports,0.614)\u003cbr/\u003e(Cleveland Browns,1.0)\u003cbr/\u003e(Wide receiver,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/COLEMAN2_1056197_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676016707586\tJared Goff\u0027s fantasy impact on the Rams\t5.0\t%html (St. Louis Rams,1.0)\u003cbr/\u003e(CBS Sports,0.723)\u003cbr/\u003e(Quarterback,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/GOFF2_1056199_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677075011966\tFantasy Outlook: Baltimore Ravens\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/FLACCO_THUMB_1056915_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677137987615\tFantasy Outlook: Tampa Bay Buccaneers\t5.0\t%html (Fantasy,0.903)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/WINSTON_THUMB_1057095_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n692035139942\tAdrian Peterson\u0027s Fantasy Outlook\t5.0\t%html (Minnesota Vikings,0.946)\u003cbr/\u003e(Fantasy,0.994)\u003cbr/\u003e(Adrian Peterson,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/PETERSON_THUMB_1068107_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n692022339537\tFantasy impact of Tyler Eifert\u0027s ankle injury\t5.0\t%html (Cincinnati Bengals,0.82)\u003cbr/\u003e(Tyler Eifert,0.854)\u003cbr/\u003e(Fantasy,0.721)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/EIFERT_THUMB_1068097_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677064259900\tFantasy Outlook: Green Bay Packers\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/GB2_thumb_1056859_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677052995735\tFantasy Outlook: New York Giants\t5.0\t%html (Fantasy,0.998)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/BECKHAM_THUMB_1056851_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n670832707768\tFantasy Football Today mailbag: 4/21\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/FFB_CliveWalfordThumg_42116_1053494_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676013123820\tEzekiel Elliott\u0027s fantasy impact on the Cowboys\t5.0\t%html (Running back,1.0)\u003cbr/\u003e(Dallas Cowboys,0.998)\u003cbr/\u003e(CBS Sports,0.63)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/ELLIOT2_1056196_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677127747864\tFantasy Outlook: Philadelphia Eagles\t5.0\t%html (Fantasy,0.85)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/PHI2_thumb_1057049_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676016195566\tJosh Doctson\u0027s fantasy impact on the Redskins\t4.0\t%html (CBS Sports,0.919)\u003cbr/\u003e(Washington Redskins,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DOCTSON2_1056198_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677077059992\tFantasy Outlook: New England Patriots\t5.0\t%html (Fantasy,0.968)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/NE2_thumb_1056917_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677082691752\tFantasy Outlook: Cleveland Browns\t5.0\t%html (Fantasy,0.939)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/GORDON_THUMB_1056929_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677070403804\tFantasy Outlook: Houston Texans\t5.0\t%html (Fantasy,0.923)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DEANDRE_HOPKINS_THUMB_1056895_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n687364675909\tFantasy Football mailbag: 5/17\t5.0\t%html (Twitter Inc.,0.551)\u003cbr/\u003e(Fantasy football,0.259)\u003cbr/\u003e(Detroit Lions,0.859)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/TATE_THUMB_1064600_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677133891830\tFantasy Outlook: San Francisco 49ers\t4.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/GABBERT_THUMB_1057083_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677126723892\tFantasy Outlook: Tennessee Titans\t5.0\t%html (Fantasy,0.951)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/MARIOTA_THUMB_1057047_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677088323680\tFantasy Outlook: Denver Broncos\t5.0\t%html (Fantasy,0.937)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DEN2_thumb_1056953_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677108803743\tFantasy Outlook: New York Jets\t5.0\t%html (Fantasy,0.931)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/MARSHALL_THUMB_1057011_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677102147647\tFantasy Outlook: Oakland Raiders\t5.0\t%html (National Football League draft,0.113)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/OAK2_thumb_1056993_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n685350467932\tFantasy Football Today mailbag: 5/13\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DAVID_JOHNSON_THUMB_1062950_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677103683586\tFantasy Outlook: Detroit Lions\t5.0\t%html (Fantasy,0.979)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/STAFFORD_THUMB_1057004_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n692038211516\tFantasy Football mailbag: 5/24\t5.0\t%html (Green Bay Packers,0.973)\u003cbr/\u003e(Jordy Nelson,0.999)\u003cbr/\u003e(Twitter Inc.,0.471)\u003cbr/\u003e(Fantasy football,0.153)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/JORDY_NELSON_1068106_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677072451771\tFantasy Outlook: Dallas Cowboys\t5.0\t%html (Dallas Cowboys,0.112)\u003cbr/\u003e(Fantasy,0.933)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DAL_thumb2_1056903_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677129795847\tFantasy Outlook: Carolina Panthers\t5.0\t%html (Fantasy,0.941)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/NEWTON_THUMB_1057060_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677088835969\tFantasy Outlook: Chicago Bears\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/CHI_thumb_1056970_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677134403568\tFantasy Outlook: Pittsburgh Steelers\t5.0\t%html (Fantasy,0.724)\u003cbr/\u003e(Pittsburgh Steelers,0.115)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/BELL_THUMB_1057071_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n679245379730\tFantasy Football Today mailbag: 5/4\t5.0\t%html (Dallas Cowboys,0.869)\u003cbr/\u003e(Fantasy football,0.142)\u003cbr/\u003e(Twitter Inc.,0.54)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Ezekiel_Elliott_1058572_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n694417475674\tFantasy Football Rankings (5/27)\t5.0\t%html \t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/DOUG_MARTIN_THUMB_1069841_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n677109315922\tFantasy Outlook: Atlanta Falcons\t5.0\t%html (Fantasy,0.953)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/ATL2_thumb_1057014_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n685355587851\tFantasy Football post-NFL Draft mock\t5.0\t%html (Fantasy football,0.527)\u003cbr/\u003e(National Football League draft,0.213)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/ELLIOTT_THUMB_1062952_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n676017219850\tCarson Wentz\u0027s fantasy impact on the Eagles\t5.0\t%html (Quarterback,1.0)\u003cbr/\u003e(Philadelphia Eagles,1.0)\u003cbr/\u003e(CBS Sports,0.462)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/WENTZ2_1056200_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n"
+      },
+      "dateCreated": "Jun 29, 2016 5:00:07 PM",
+      "dateStarted": "Jun 30, 2016 6:10:08 PM",
+      "dateFinished": "Jun 30, 2016 6:10:15 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "User\u0027s Features",
+      "text": "print \"%table\"\nprint \"\\t\".join([\"Feature\", \"Score\", \"Description\"])\n\nfor r in sqlContext.sql(\"SELECT uf.feature, uf.score, f.description FROM features f, user_features uf WHERE f.name \u003d uf.feature and userId\u003d\u0027{0}\u0027 order by uf.score desc\".format(userId)).collect():\n    print \"\\t\".join([r[\"feature\"], str(r[\"score\"]), str(r[\"description\"])])",
+      "dateUpdated": "Jun 30, 2016 6:10:08 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "Feature",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "Score",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "Feature",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "Score",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467226785848_-82064267",
+      "id": "20160629-185945_1245856680",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "Feature\tScore\tDescription\nQuarterback\t5.0\tFootball team\nWide receiver\t5.0\tFootball team\nPhiladelphia Eagles\t5.0\tFootball team\nSt. Louis Rams\t5.0\tFootball team\nRunning back\t5.0\tFootball team\nCleveland Browns\t5.0\tFootball team\nAdrian Peterson\t5.0\tFootball running back\nJordy Nelson\t4.995\tFootball wide receiver\nBlake Bortles\t4.98\tFootball quarterback\nCBS\t4.98\tTelevision broadcasting company\nMinnesota Vikings\t4.865\tFootball team\nGreen Bay Packers\t4.865\tFootball team\nHouston Texans\t4.505\tFootball team\nFantasy\t4.33764285714\tVideo game series\nDetroit Lions\t4.295\tFootball team\nTyler Eifert\t4.27\tFootball tight end\nCincinnati Bengals\t4.1\tFootball franchise\nWashington Redskins\t4.0\tFootball team\nCBS Sports\t3.31183333333\tTelevision broadcasting company\nDallas Cowboys\t3.29833333333\tFootball team\nSports radio\t3.29\tRadio network\nTwitter Inc.\t2.60333333333\tCompany\nFantasy football\t1.35125\tCable television company\nNational Football League draft\t0.815\tLeague\nPittsburgh Steelers\t0.575\tFootball team\n"
+      },
+      "dateCreated": "Jun 29, 2016 6:59:45 PM",
+      "dateStarted": "Jun 30, 2016 6:10:09 PM",
+      "dateFinished": "Jun 30, 2016 6:10:16 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "naive Version",
+      "text": "\"\"\"\nrecommendate videos which has similar features\nWeights:\n    Time: min(max(2 - (now - publishAt).days / 30, 0), 2) , ragion 0 to 2\n\ncomplexity is O(N*U**2)\n\"\"\"\n\nimport datetime as dt\n\nthe_user_features \u003d sqlContext.sql(\"SELECT uf.feature, uf.score FROM user_features uf WHERE uf.userId\u003d\u0027{0}\u0027 order by uf.score desc\".format(userId)).map(lambda r:(r[\"feature\"], r[\"score\"])).collectAsMap()\n\nthe_user_watchedVideos \u003d sqlContext.sql(\"SELECT videoId FROM user_scores WHERE userId\u003d\u0027{0}\u0027\".format(userId)).map(lambda r: r[\"videoId\"]).collect()\n\nscores \u003d dict()\n\nvideoId \u003d \"\"\nvfs \u003d sqlContext.sql(\"SELECT v.videoId, vf.feature, vf.score, v.startAt FROM videos v, video_features vf WHERE v.videoId\u003dvf.videoId\").collect()\nfor vf in vfs:\n    if vf[\"videoId\"] in the_user_watchedVideos:\n        continue \n        \n    if videoId !\u003d vf[\"videoId\"]:\n        videoId \u003d vf[\"videoId\"]\n        scores[videoId] \u003d dict(videoId\u003dvideoId, score\u003dmax(0., 2 - ((dt.datetime.now() - vf[\"startAt\"]).days / 30.)))\n    \n    uf \u003d the_user_features.get(vf[\"feature\"])\n    if uf !\u003d None:\n        scores[videoId][\"score\"] +\u003d uf - abs(vf[\"score\"] - uf)\n        \n\nsqlContext.createDataFrame(scores.values()).registerTempTable(\"naiveResult\")\n\nresult \u003d sqlContext.sql(\"select v.videoId, v.title, v.imageUrl, v.startAt, r.score from videos v, naiveResult r where v.videoId\u003dr.videoId order by r.score desc limit 10\").collect()\n\nprint \"%table\"\nprint \"{0}\\t{1}\\t{2}\\t{3}\\t{4}\\t{5}\".format(\"VideoId\", \"Title\", \"Score\", \"Time\" , \"features\", \"image\")\nfor r in result:\n    features \u003d \"\u003cbr/\u003e\".join(sqlContext.sql(\"select feature, score from video_features where videoId\u003d\u0027{0}\u0027\".format(r[\"videoId\"])) \\\n    .map(lambda r:\"({0},{1})\".format(r[\"feature\"].encode(\u0027utf-8\u0027).strip(), r[\"score\"])).collect())\n    #features \u003d \"\"\n    print \"{0}\\t{1}\\t{2}\\t{3}\\t%html {4}\\t%html \u003cimg src\u003d\u0027{5}\u0027 width\u003d\u0027250px\u0027/\u003e\".format(r[\"videoId\"], r[\"title\"], r[\"score\"], r[\"startAt\"], features, r[\"imageUrl\"])",
+      "dateUpdated": "Jun 30, 2016 6:29:58 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 588.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "VideoId",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "Title",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "VideoId",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "Title",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "title": true,
+        "lineNumbers": true,
+        "editorHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467219479989_1649099541",
+      "id": "20160629-165759_1323003597",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "VideoId\tTitle\tScore\tTime\tfeatures\timage\n709321795868\tFantasy team outlook: Washington Redskins\t3.53666666667\t2016-06-20 04:00:00\t%html (Washington Redskins,1.0)\u003cbr/\u003e(Fantasy football,0.87)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Kirk_Cousins_1081906_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n705556547694\tWhy the Cowboys should trade for Mike Glennon\t3.46666666667\t2016-06-14 04:00:00\t%html (Mike Glennon,0.998)\u003cbr/\u003e(Tampa Bay Buccaneers,1.0)\u003cbr/\u003e(Dallas Cowboys,1.0)\u003cbr/\u003e(Aaron Rodgers,0.47)\u003cbr/\u003e(Quarterback,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/MikeGlennon_1078375_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n709355587820\tFantasy team outlook: Detroit Lions\t3.39266666667\t2016-06-20 04:00:00\t%html (NFL on CBS,0.123)\u003cbr/\u003e(Fantasy football,0.726)\u003cbr/\u003e(Detroit Lions,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/matthew_Stafford_1081979_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n709358147579\tFantasy team outlook: Green Bay Packers\t3.34166666667\t2016-06-20 04:00:00\t%html (Fantasy football,0.675)\u003cbr/\u003e(Green Bay Packers,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Aaron_Rodgers_1081982_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n709344835540\tFantasy team outlook: Los Angeles Rams\t3.26366666667\t2016-06-20 04:00:00\t%html (Fantasy football,0.602)\u003cbr/\u003e(St. Louis Rams,0.995)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Todd_Gurley_1081944_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n709323331664\tFantasy team outlook: Philadelphia Eagles\t3.19166666667\t2016-06-20 04:00:00\t%html (Philadelphia Eagles,0.999)\u003cbr/\u003e(Fantasy football,0.526)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Sam_Bradford_1081910_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n709360195641\tFantasy team outlook: Cincinnati Bengals\t3.18566666667\t2016-06-20 04:00:00\t%html (Cincinnati Bengals,0.991)\u003cbr/\u003e(Fantasy football,0.528)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/andy_dalton_1081986_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n709326915875\tFantasy team outlook: Dallas Cowboys\t3.17166666667\t2016-06-20 04:00:00\t%html (Fantasy football,0.505)\u003cbr/\u003e(Dallas Cowboys,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Ezekiell_elliott_1081914_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n699472451664\tBroncos CB Aqib Talib shot after nightclub incident\t2.94666666667\t2016-06-05 04:00:00\t%html (Bass guitar,0.412)\u003cbr/\u003e(National Football League,1.0)\u003cbr/\u003e(Aqib Talib,0.998)\u003cbr/\u003e(Dallas Cowboys,1.0)\u003cbr/\u003e(Cleveland Browns,0.78)\u003cbr/\u003e(Denver Broncos,1.0)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/talib_1073609_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n714689091739\tNFL Offseason Questions: Washington Redskins\t2.93133333333\t2016-06-28 04:00:00\t%html (National Football League,1.0)\u003cbr/\u003e(Kirk Cousins,1.0)\u003cbr/\u003e(Washington Redskins,0.998)\t%html \u003cimg src\u003d\u0027http://sports.cbsimg.net/images/cbsmedia/video/thumbnails/Redskins_1085774_640x360.jpg\u0027 width\u003d\u0027250px\u0027/\u003e\n"
+      },
+      "dateCreated": "Jun 29, 2016 4:57:59 PM",
+      "dateStarted": "Jun 30, 2016 6:10:16 PM",
+      "dateFinished": "Jun 30, 2016 6:10:18 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Matrix Factorization",
+      "text": "from pyspark.mllib.recommendation import MatrixFactorizationModel\n\nmodel \u003d MatrixFactorizationModel.load(sc, \"/cbs/TrainedModel\")\n\nuserIndex \u003d sqlContext.sql(\"SELECT index FROM userMap WHERE userId\u003d\" + userId).first()[\"index\"]\n\nmodel.pre",
+      "dateUpdated": "Jun 30, 2016 6:36:00 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorHide": false,
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467230419267_1555066374",
+      "id": "20160629-200019_1412227105",
+      "result": {
+        "code": "ERROR",
+        "type": "TEXT",
+        "msg": "Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark.py\", line 225, in \u003cmodule\u003e\n    eval(compiledCode)\n  File \"\u003cstring\u003e\", line 4, in \u003cmodule\u003e\nAttributeError: \u0027MatrixFactorizationModel\u0027 object has no attribute \u0027pre\u0027\n"
+      },
+      "dateCreated": "Jun 29, 2016 8:00:19 PM",
+      "dateStarted": "Jun 30, 2016 6:10:16 PM",
+      "dateFinished": "Jun 30, 2016 6:10:19 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467310208668_-1642877593",
+      "id": "20160630-181008_718173448",
+      "dateCreated": "Jun 30, 2016 6:10:08 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "CBS Validation",
+  "id": "2BQMTJ93P",
+  "angularObjects": {
+    "2BNTUCZY9": [],
+    "2BR35CAAY": [],
+    "2BRV7JKUH": [],
+    "2BPY7DFTV": [],
+    "2BN8E2KUT": [],
+    "2BMZT71S3": [],
+    "2BPZNUUGB": [],
+    "2BQF1EWMT": [],
+    "2BPVUY6QV": [],
+    "2BP8VQQUP": [],
+    "2BRMK1MMP": [],
+    "2BN67BXG6": [],
+    "2BP4228GP": [],
+    "2BPAMJPFK": []
+  },
+  "config": {},
+  "info": {}
+}

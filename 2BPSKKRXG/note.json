@@ -2,8 +2,8 @@
   "paragraphs": [
     {
       "title": "Matrix Factorization",
-      "text": "from pyspark.mllib.recommendation import ALS\n\nfrom pyspark.mllib.recommendation import ALS, Rating\nquery \u003d sqlContext.sql(\"select userId, videoId, score from user_scores\").cache()\n\nuserMap \u003d sc.broadcast(query.map(lambda x:x[0]).distinct().zipWithIndex().collectAsMap())\nvideoMap \u003d sc.broadcast(query.map(lambda x:x[1]).distinct().zipWithIndex().collectAsMap())\n\nscores \u003d query.map(lambda r: Rating(userMap.value.get(r[0]), videoMap.value.get(r[1]), float(r[2])))\nmodel \u003d ALS.trainImplicit(scores, 5)\nmodel.save(sc, \"/cbs/TrainedModel\")\n\nsqlContext.createDataFrame(zip(userMap.value.keys(), userMap.value.values()), [\"userId\", \"index\"]).write.saveAsTable(\"userMap\", mode\u003d\"overwrite\")\nsqlContext.createDataFrame(zip(videoMap.value.keys(), videoMap.value.values()), [\"videoId\", \"index\"]).write.saveAsTable(\"videoMap\", mode\u003d\"overwrite\")",
-      "dateUpdated": "Jun 24, 2016 7:29:19 PM",
+      "text": "#TODO Now only train, no test\nfrom pyspark.mllib.recommendation import ALS, Rating\nquery \u003d sqlContext.sql(\"select us.userId, us.videoId, us.score from user_scores us, videos v where us.videoId\u003dv.videoId\").cache()\n\nuserMap \u003d sc.broadcast(query.map(lambda x:x[0]).distinct().zipWithIndex().collectAsMap())\nvideoMap \u003d sc.broadcast(query.map(lambda x:x[1]).distinct().zipWithIndex().collectAsMap())\n\nscores \u003d query.map(lambda r: Rating(userMap.value.get(r[0]), videoMap.value.get(r[1]), float(r[2])))\nmodel \u003d ALS.trainImplicit(scores, 5)\nmodel.save(sc, \"/cbs/TrainedModel\")\n\nsqlContext.createDataFrame(zip(userMap.value.keys(), userMap.value.values()), [\"userId\", \"index\"]).write.saveAsTable(\"userMap\", mode\u003d\"overwrite\")\nsqlContext.createDataFrame(zip(videoMap.value.keys(), videoMap.value.values()), [\"videoId\", \"index\"]).write.saveAsTable(\"videoMap\", mode\u003d\"overwrite\")",
+      "dateUpdated": "Jun 30, 2016 4:27:23 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -28,16 +28,31 @@
       "result": {
         "code": "SUCCESS",
         "type": "TEXT",
-        "msg": "[Row(videoId\u003du\u0027676013123820\u0027, Title\u003du\"Ezekiel Elliott\u0027s fantasy impact on the Cowboys\"), Row(videoId\u003du\u0027693587523533\u0027, Title\u003du\u0027Dave Serrano retained as Tennessee baseball coach\u0027), Row(videoId\u003du\u0027610102851792\u0027, Title\u003du\u0027NBA lineups\u0027), Row(videoId\u003du\u0027711484995587\u0027, Title\u003du\u0027How will Jimmy Garoppolo perform in 2016\u0027), Row(videoId\u003du\u0027682764867845\u0027, Title\u003du\u0027James Franklin and Penn State trying to move forward\u0027), Row(videoId\u003du\u0027696395843914\u0027, Title\u003du\"We Need to Listen: Abiola Aborishade\u0027s perseverance\"), Row(videoId\u003du\u0027689772611589\u0027, Title\u003du\u0027Sevilla beats Liverpool in Europa League final\u0027), Row(videoId\u003du\u0027600457795684\u0027, Title\u003du\u0027Top Fantasy WRs in 2015\u0027), Row(videoId\u003du\u0027600457283983\u0027, Title\u003du\u0027Top Fantasy QBs in 2015\u0027), Row(videoId\u003du\u0027700152899645\u0027, Title\u003du\u0027NBA Draft: Tyler Ulis player breakdown\u0027)]\n"
+        "msg": ""
       },
       "dateCreated": "Jun 24, 2016 2:01:16 PM",
-      "dateStarted": "Jun 24, 2016 2:14:05 PM",
-      "dateFinished": "Jun 24, 2016 2:14:05 PM",
+      "dateStarted": "Jun 30, 2016 4:15:07 PM",
+      "dateFinished": "Jun 30, 2016 4:15:13 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "config": {},
+      "text": "",
+      "dateUpdated": "Jun 30, 2016 4:07:56 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
       "settings": {
         "params": {},
         "forms": {}
