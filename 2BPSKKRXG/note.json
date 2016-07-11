@@ -3,7 +3,7 @@
     {
       "title": "Matrix Factorization",
       "text": "#TODO Now only train, no test\nfrom pyspark.mllib.recommendation import ALS, Rating\nquery \u003d sqlContext.sql(\"select us.userId, us.videoId, us.score from user_scores us, videos v where us.videoId\u003dv.videoId\").cache()\n\nuserMap \u003d sc.broadcast(query.map(lambda x:x[0]).distinct().zipWithIndex().collectAsMap())\nvideoMap \u003d sc.broadcast(query.map(lambda x:x[1]).distinct().zipWithIndex().collectAsMap())\n\nscores \u003d query.map(lambda r: Rating(userMap.value.get(r[0]), videoMap.value.get(r[1]), float(r[2])))\nmodel \u003d ALS.trainImplicit(scores, 5)\nmodel.save(sc, \"/cbs/TrainedModel\")\n\nsqlContext.createDataFrame(zip(userMap.value.keys(), userMap.value.values()), [\"userId\", \"index\"]).write.saveAsTable(\"userMap\", mode\u003d\"overwrite\")\nsqlContext.createDataFrame(zip(videoMap.value.keys(), videoMap.value.values()), [\"videoId\", \"index\"]).write.saveAsTable(\"videoMap\", mode\u003d\"overwrite\")",
-      "dateUpdated": "Jun 30, 2016 4:27:23 PM",
+      "dateUpdated": "Jul 1, 2016 1:58:22 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -31,8 +31,8 @@
         "msg": ""
       },
       "dateCreated": "Jun 24, 2016 2:01:16 PM",
-      "dateStarted": "Jun 30, 2016 4:15:07 PM",
-      "dateFinished": "Jun 30, 2016 4:15:13 PM",
+      "dateStarted": "Jul 1, 2016 1:58:22 PM",
+      "dateFinished": "Jul 1, 2016 1:58:34 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },

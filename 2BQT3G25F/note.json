@@ -31,8 +31,8 @@
     },
     {
       "title": "Reload Data",
-      "text": "from pyspark.sql.context import HiveContext\n\nsqlContext \u003d HiveContext(sc)\nsqlContext.read.parquet(\"/tmp/hive/hive/warehouse/videos\").write.saveAsTable(\"videos\",mode\u003d\"overwrite\")",
-      "dateUpdated": "Jun 30, 2016 10:37:07 PM",
+      "text": "from pyspark.sql.context import HiveContext\n\nsqlContext \u003d HiveContext(sc)\nsqlContext.read.parquet(\"file://home/vagrant/hdfs/user/hive/hive/warehouse/videos\").write.saveAsTable(\"videos\",mode\u003d\"overwrite\")",
+      "dateUpdated": "Jul 1, 2016 3:37:58 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -66,9 +66,8 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "title": "Restart",
-      "text": "%sh\n/usr/lib/zeppelin/0.5.6/bin/zeppelin-daemon.sh restart",
-      "dateUpdated": "Jun 30, 2016 8:56:10 AM",
+      "text": "sqlContext.createDataFrame([dict(a\u003d1,b\u003d2)]).write.saveAsTable(\"temp\")\nsqlContext.sql(\"drop table temp\")",
+      "dateUpdated": "Jul 1, 2016 2:47:27 AM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -81,32 +80,276 @@
           "scatter": {}
         },
         "enabled": true,
-        "editorMode": "ace/mode/sh",
-        "title": true
+        "editorMode": "ace/mode/scala"
       },
       "settings": {
         "params": {},
         "forms": {}
       },
-      "jobName": "paragraph_1466806268921_531011857",
-      "id": "20160624-221108_210232827",
-      "result": "org.apache.zeppelin.interpreter.InterpreterException: org.apache.thrift.transport.TTransportException: java.net.ConnectException: Connection refused",
-      "dateCreated": "Jun 24, 2016 10:11:08 PM",
-      "dateStarted": "Jun 24, 2016 10:14:00 PM",
-      "dateFinished": "Jun 24, 2016 10:14:00 PM",
-      "status": "ERROR",
-      "errorMessage": "java.net.ConnectException: Connection refused\n\tat java.net.PlainSocketImpl.socketConnect(Native Method)\n\tat java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)\n\tat java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)\n\tat java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)\n\tat java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)\n\tat java.net.Socket.connect(Socket.java:589)\n\tat org.apache.thrift.transport.TSocket.open(TSocket.java:182)\n\tat org.apache.zeppelin.interpreter.remote.ClientFactory.create(ClientFactory.java:51)\n\tat org.apache.zeppelin.interpreter.remote.ClientFactory.create(ClientFactory.java:37)\n\tat org.apache.commons.pool2.BasePooledObjectFactory.makeObject(BasePooledObjectFactory.java:60)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.create(GenericObjectPool.java:861)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:435)\n\tat org.apache.commons.pool2.impl.GenericObjectPool.borrowObject(GenericObjectPool.java:363)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterProcess.getClient(RemoteInterpreterProcess.java:139)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getFormType(RemoteInterpreter.java:266)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.getFormType(LazyOpenInterpreter.java:104)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:198)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:169)\n\tat org.apache.zeppelin.scheduler.RemoteScheduler$JobRunner.run(RemoteScheduler.java:322)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n",
+      "jobName": "paragraph_1467339824149_-140946232",
+      "id": "20160701-022344_1550143454",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "/usr/lib/spark/1.6.1/python/pyspark/sql/context.py:239: UserWarning: inferring schema from dict is deprecated,please use pyspark.sql.Row instead\n  warnings.warn(\"inferring schema from dict is deprecated,\"\n"
+      },
+      "dateCreated": "Jul 1, 2016 2:23:44 AM",
+      "dateStarted": "Jul 1, 2016 2:47:27 AM",
+      "dateFinished": "Jul 1, 2016 2:47:34 AM",
+      "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
-      "config": {},
+      "text": "%sql\nshow tables",
+      "dateUpdated": "Jul 1, 2016 2:39:15 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "tableName",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "isTemporary",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "tableName",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "isTemporary",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sql"
+      },
       "settings": {
         "params": {},
         "forms": {}
       },
       "jobName": "paragraph_1466806401677_284154661",
       "id": "20160624-221321_1072704437",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "tableName\tisTemporary\nfeatures\tfalse\nuser_features\tfalse\nuser_scores\tfalse\nusermap\tfalse\nvideo_features\tfalse\nvideomap\tfalse\nvideos\tfalse\n"
+      },
       "dateCreated": "Jun 24, 2016 10:13:21 PM",
+      "dateStarted": "Jul 1, 2016 2:39:15 PM",
+      "dateFinished": "Jul 1, 2016 2:39:16 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "tables \u003d sqlContext.tables().map(lambda r:r[0]).collect()\n\nfeatures \u003d dict()\nvideos \u003d dict()\nvideo_features \u003d dict()\nuser_scores \u003d dict()\nuser_features \u003d dict()\n\nfeatureIgnores \u003d [\"CBS Sports\", \"CBS\"]\nfeatureMaps \u003d {\"UNK NBA\":\"NBA\"}\n\nif \"videos\" in tables:\n    videos \u003d sqlContext.table(\"videos\").map(lambda row: (row.videoId, row.asDict())).collectAsMap()\n\nif \"features\" in tables:\n    features \u003d sqlContext.table(\"features\").map(lambda row: (row.name, row.asDict())).collectAsMap()\n\nif \"video_features\" in tables:\n    video_features \u003d sqlContext.table(\"video_features\").map(lambda row: ((row.videoId, row.feature), row.asDict())).collectAsMap()\n    \nif \"user_scores\" in tables:\n    user_scores \u003d sqlContext.table(\"user_scores\").map(lambda row: ((row[\"userId\"], row[\"videoId\"]), row.asDict())).collectAsMap()\n    \nif \"user_features\" in tables:\n    user_features \u003d sqlContext.table(\"user_features\").map(lambda row: ((row[\"userId\"], row[\"feature\"]), row.asDict())).collectAsMap()",
+      "dateUpdated": "Jul 8, 2016 9:51:03 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1467328054981_-1536288844",
+      "id": "20160630-230734_627434194",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jun 30, 2016 11:07:34 PM",
+      "dateStarted": "Jul 8, 2016 9:51:03 PM",
+      "dateFinished": "Jul 8, 2016 9:51:05 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "features[\"UNK NBA\"][\"name\"] \u003d \"NBA\"\n\nfor vf in video_features.values():\n    if(vf[\"feature\"]\u003d\u003d\"UNK NBA\"):\n        vf[\"feature\"]\u003d\"NBA\"",
+      "dateUpdated": "Jul 8, 2016 9:53:58 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1468009115953_472569070",
+      "id": "20160708-201835_1455837802",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jul 8, 2016 8:18:35 PM",
+      "dateStarted": "Jul 8, 2016 9:53:58 PM",
+      "dateFinished": "Jul 8, 2016 9:53:58 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sqlContext.createDataFrame(features).write.saveAsTable(\"features\", mode\u003d\"overwrite\")",
+      "dateUpdated": "Jul 8, 2016 9:25:58 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1468005781843_1041396878",
+      "id": "20160708-192301_923510681",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jul 8, 2016 7:23:01 PM",
+      "dateStarted": "Jul 8, 2016 8:18:19 PM",
+      "dateFinished": "Jul 8, 2016 8:18:23 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sqlContext.createDataFrame(video_features.values()).write.saveAsTable(\"video_features\",mode\u003d\"overwrite\")",
+      "dateUpdated": "Jul 8, 2016 9:56:24 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1468014981138_1696636969",
+      "id": "20160708-215621_1236535758",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jul 8, 2016 9:56:21 PM",
+      "dateStarted": "Jul 8, 2016 9:56:24 PM",
+      "dateFinished": "Jul 8, 2016 9:56:25 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "#sqlContext.createDataFrame(videos.values()).write.saveAsTable(\"videos\",mode\u003d\"overwrite\")\n\nsqlContext.createDataFrame(video_features.values()).write.saveAsTable(\"video_features\",mode\u003d\"overwrite\")\n\nfrom pyspark.sql.types import *\nfeaturesSchema \u003d StructType().add(\"name\",StringType()) \\\n                             .add(\"description\",StringType()) \\\n                             .add(\"detailedDescription\",StringType()) \\\n                             .add(\"wikiId\", StringType()) \\\n                             .add(\"createdAt\",TimestampType()) \\\n                             .add(\"relatives\",MapType(StringType(), FloatType())) \\\n                             .add(\"types\" ,ArrayType(StringType())) \\\n                             .add(\"processed\",IntegerType()) \n\nsqlContext.createDataFrame(map(lambda r: (r.get(\"name\"), r.get(\"description\"), r.get(\"detailedDescription\"), r.get(\"wikiId\"), r.get(\"createdAt\"), r.get(\"relatives\"), r.get(\"types\"), r.get(\"processed\")), features.values()), featuresSchema).write.saveAsTable(\"features\",mode\u003d\"overwrite\")\n\n#sqlContext.createDataFrame(user_features.values()).write.saveAsTable(\"user_features\", mode\u003d\"overwrite\")",
+      "dateUpdated": "Jul 8, 2016 9:56:22 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1468005837653_-1643872965",
+      "id": "20160708-192357_1607859168",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": ""
+      },
+      "dateCreated": "Jul 8, 2016 7:23:57 PM",
+      "dateStarted": "Jul 8, 2016 9:54:55 PM",
+      "dateFinished": "Jul 8, 2016 9:54:56 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "sqlContext.table(\"user\")",
+      "dateUpdated": "Jul 8, 2016 9:58:51 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "jobName": "paragraph_1468008796807_-289879012",
+      "id": "20160708-201316_500899041",
+      "dateCreated": "Jul 8, 2016 8:13:16 PM",
       "status": "READY",
       "progressUpdateIntervalMs": 500
     }

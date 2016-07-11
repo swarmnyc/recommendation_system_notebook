@@ -62,8 +62,8 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sql\nSELECT Count(*) as Available_Records\nFROM user_scores u, videos v\nWHERE u.videoId \u003d v.videoId",
-      "dateUpdated": "Jun 30, 2016 10:57:40 PM",
+      "text": "%sql\nSELECT Count(*) as Available_Records\nFROM user_scores u, videos v\nWHERE u.videoId \u003d v.videoId and u.userId\u003d\u0027688435115\u0027",
+      "dateUpdated": "Jul 1, 2016 8:28:33 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -87,11 +87,11 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "Available_Records\n23193\n"
+        "msg": "Available_Records\n16\n"
       },
       "dateCreated": "Jun 24, 2016 3:39:49 AM",
-      "dateStarted": "Jun 29, 2016 4:07:29 PM",
-      "dateFinished": "Jun 29, 2016 4:07:30 PM",
+      "dateStarted": "Jul 1, 2016 8:28:33 PM",
+      "dateFinished": "Jul 1, 2016 8:28:34 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -157,7 +157,7 @@
     {
       "title": "Query Videos by Id",
       "text": "%sql\nSELECT * FROM videos\nWHERE videoId \u003d ${videoId\u003d1}",
-      "dateUpdated": "Jun 24, 2016 7:56:12 PM",
+      "dateUpdated": "Jul 1, 2016 7:30:11 PM",
       "config": {
         "colWidth": 12.0,
         "graph": {
@@ -198,7 +198,7 @@
       },
       "settings": {
         "params": {
-          "videoId": "708003907720"
+          "videoId": "686592579524"
         },
         "forms": {
           "videoId": {
@@ -213,11 +213,11 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "channels\tdescription\tendAt\timageUrl\tlength\tprocessed\tstartAt\ttitle\tvideoId\tvideoUrl\nWrappedArray(golf)\tDustin Johnson finishes day 2 tied for the lead and a few big names are in danger of missing the cut. Kyle Porter joins Matthew Coca to breakdown a wild first couple of days at the U.S. Open.\t2017-06-18 01:59:00.0\t\t130\t0\t2016-06-17 04:00:00.0\tU.S. Open Day 2 recap\t708003907720\thttp://cbssports_mp4-a.akamaihd.net/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Sports_VMS/2016/06/18/707997763934/Golf_USOPEN_Day2_061716_1080661_740.mp4\n"
+        "msg": "channels\tdescription\tendAt\timageUrl\tlength\tprocessed\tstartAt\ttitle\tvideoId\tvideoUrl\nWrappedArray(golf)\tTiger Woods said he is \u0027hoping to play\u0027 at the Quicken Loans National as he eyes his return to the PGA Tour. Kyle Porter joins Nick Kostos to talk about what to expect from Tiger moving forward.\t2017-05-16 16:41:00.0\thttp://sports.cbsimg.net/images/cbsmedia/video/thumbnails/WOODS_THUMB_1063938_640x360.jpg\t155\t3\t2016-05-16 04:00:00.0\tTiger Woods eyeing return\t686592579524\thttp://ipad.cbs.com.edgesuite.net/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Sports_VMS/2016/05/16/686585411647/GOLF_TIGER_WOODS_051616_1063933_740.mp4\n"
       },
       "dateCreated": "Jun 23, 2016 11:53:43 PM",
-      "dateStarted": "Jun 24, 2016 7:56:12 PM",
-      "dateFinished": "Jun 24, 2016 7:56:13 PM",
+      "dateStarted": "Jul 1, 2016 7:30:11 PM",
+      "dateFinished": "Jul 1, 2016 7:30:11 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -283,14 +283,14 @@
     {
       "title": "videos watch Count ",
       "text": "%sql\nSELECT v.videoId, v.title, count(u.*) as count\nFROM videos v, user_scores u\nWHERE v.videoId \u003d u.videoId\nGROUP BY v.videoId, v.title\nORDER BY count(u.*) DESC",
-      "dateUpdated": "Jun 30, 2016 10:58:08 PM",
+      "dateUpdated": "Jul 1, 2016 8:31:30 PM",
       "config": {
         "colWidth": 6.0,
         "editorMode": "ace/mode/sql",
         "title": true,
         "graph": {
           "mode": "table",
-          "height": 303.0,
+          "height": 299.0,
           "optionOpen": false,
           "keys": [
             {
@@ -396,7 +396,7 @@
     {
       "title": "user Watched Videos",
       "text": "%sql\nSELECT v.videoId, v.title, u.score\nFROM videos v, user_scores u\nWHERE v.videoId \u003d u.videoId and u.userId\u003d${userId\u003d1}",
-      "dateUpdated": "Jun 24, 2016 12:18:43 AM",
+      "dateUpdated": "Jul 1, 2016 8:33:05 PM",
       "config": {
         "colWidth": 6.0,
         "editorMode": "ace/mode/sql",
@@ -432,7 +432,7 @@
       },
       "settings": {
         "params": {
-          "userId": "674408489"
+          "userId": "688435115"
         },
         "forms": {
           "userId": {
@@ -447,11 +447,11 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "videoId\ttitle\tscore\n696025667935\tFlorida commit spins it at \"The QB Retreat\"\t5.0\n693378115723\t6\u00272\" guard takes flight from the FT line\t5.0\n691917891662\tIvanka Trump crushes a drive... in high heels\t5.0\n695230531980\tCollier ends it with a brutal spinning kick\t3.0\n689636419847\tIs this the longest bat flip in recorded history?\t5.0\n686800963846\tMiracle buzzer-beater from how far away?\t5.1\n686529603826\tAn 8th grader shouldn\u0027t be capable of this\t5.0\n695473219570\tThis might be the greatest trick video with an elephant\t4.0\n689634883821\tHigh school softball team performs a comedy of errors\t5.0\n695222339930\tRossi is Indy 500\u0027s improbable winner\t4.0\n695471683745\tBen Simmons a two sport superstar?\t3.0\n692693571659\tAwesome bottle flip sends audience into frenzy\t5.5\n687211587637\tThis is one way to pass the time during a rain delay\t4.0\n692687427851\tUltimate Frisbee player makes insane catch\t5.0\n695973955656\tInside the Numbers: the Memorial Tournament\t2.0\n695298627678\tGarbrandt stays undefeated with round one KO\t5.0\n691076163643\tDodgeball player enters the Matrix to avoid being hit\t5.0\n691774531736\tDrake hits the driving range\t5.0\n695965763916\tIs this the worst pitch ever?\t5.0\n695974467641\tGolf Power Rankings (5/31)\t3.0\n691462211607\tStreet Fighter Game 3: Green vs. Adams\t5.0\n695972931827\tThe latest on the U.S. Open\t4.0\n689635907698\tIdaho State hurdler finishes race for team despite rupturing Achilles\t2.0\n686559299610\tJ.J. Watt hits a home run off of Roger Clemens\t5.0\n688906819929\tBlake Griffin impersonation goes horribly wrong\t3.0\n"
+        "msg": "videoId\ttitle\tscore\n682827843757\tExpert Picks: The Players Championship\t5.0\n682828355695\tInside the numbers: The Players Championship\t5.0\n685423171852\tTPC Sawgrass Round 2\t5.0\n684867139634\tSpieth has uphill climb at The Players Championship\t5.0\n685227075976\tIs 2016 Finally Phil Mickelson\u0027s U.S. Open Year?\t5.0\n686592579524\tTiger Woods eyeing return\t5.0\n682078275734\tInside the Numbers: James Hahn surprises at Quail Hollow\t5.0\n686000195566\tJason Day leads by four after 54 holes at Players Championship\t5.0\n682078787717\tGolf Power Rankings (5/9)\t5.0\n684868163640\tDay leads after opening round at The Players Championship\t5.0\n686288451916\tDay cements status as World No. 1 with TPC win\t5.0\n685571651872\tJason Day leads after two days at Players Championship\t5.0\n686588483888\tGolf Power Rankings (5/16)\t5.0\n686291011706\tWhat\u0027s next for Spieth, Mcllroy?\t5.0\n681747011558\tHahn\u0027s improbable run to Wells Fargo title\t5.0\n685861443808\tJason Day sets Players Championship 36-hole scoring record\t5.0\n"
       },
       "dateCreated": "Jun 23, 2016 8:33:26 PM",
-      "dateStarted": "Jun 24, 2016 12:18:16 AM",
-      "dateFinished": "Jun 24, 2016 12:18:16 AM",
+      "dateStarted": "Jul 1, 2016 8:33:06 PM",
+      "dateFinished": "Jul 1, 2016 8:33:06 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -578,14 +578,81 @@
       "progressUpdateIntervalMs": 500
     },
     {
+      "title": "Feature via Name",
+      "text": "%sql\nSELECT * FROM features WHERE name \u003d \u0027${name}\u0027",
+      "dateUpdated": "Jul 1, 2016 7:37:04 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [
+            {
+              "name": "name",
+              "index": 0.0,
+              "aggr": "sum"
+            }
+          ],
+          "values": [
+            {
+              "name": "description",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          ],
+          "groups": [],
+          "scatter": {
+            "xAxis": {
+              "name": "name",
+              "index": 0.0,
+              "aggr": "sum"
+            },
+            "yAxis": {
+              "name": "description",
+              "index": 1.0,
+              "aggr": "sum"
+            }
+          }
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/sql",
+        "title": true
+      },
+      "settings": {
+        "params": {
+          "name": "Quicken Loans National"
+        },
+        "forms": {
+          "name": {
+            "name": "name",
+            "defaultValue": "",
+            "hidden": false
+          }
+        }
+      },
+      "jobName": "paragraph_1467400425460_636657313",
+      "id": "20160701-191345_225770236",
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "name\tdescription\tdetailedDescription\twikiId\tcreatedAt\trelatives\ttypes\tprocessed\nQuicken Loans National\tBank\tThe Tiger Woods Foundation was established in 1996 by Tiger Woods and his father, Earl Woods, to create and support community-based programs that improve the health, education, and welfare of all children in America. \tQuicken Loans National\t2016-06-24 19:28:30.621759\tnull\tWrappedArray(Organization, Corporation)\t1\n"
+      },
+      "dateCreated": "Jul 1, 2016 7:13:45 PM",
+      "dateStarted": "Jul 1, 2016 7:36:44 PM",
+      "dateFinished": "Jul 1, 2016 7:36:44 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
       "title": "Video\u0027s features",
       "text": "%sql\nSELECT v.videoId, v.title, vf.feature, vf.score \nFROM videos v, video_features vf\nWHERE v.videoId \u003d vf.videoId and v.videoId \u003d ${videoId\u003d1}",
-      "dateUpdated": "Jun 30, 2016 5:58:20 PM",
+      "dateUpdated": "Jul 1, 2016 8:20:51 PM",
       "config": {
         "colWidth": 6.0,
         "graph": {
           "mode": "table",
-          "height": 300.0,
+          "height": 289.0,
           "optionOpen": false,
           "keys": [
             {
@@ -617,7 +684,7 @@
       "settings": {
         "params": {
           "videoIds": "1",
-          "videoId": "704553027911"
+          "videoId": "688435115"
         },
         "forms": {
           "videoId": {
@@ -632,25 +699,25 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "videoId\ttitle\tfeature\tscore\n704553027911\tCFB Mount Rushmore: Michigan\tCBS Sports\t0.164\n704553027911\tCFB Mount Rushmore: Michigan\tUniversity of Michigan\t0.99\n704553027911\tCFB Mount Rushmore: Michigan\tMichigan Wolverines football\t0.999\n"
+        "msg": "videoId\ttitle\tfeature\tscore\n"
       },
       "dateCreated": "Jun 24, 2016 7:42:36 PM",
-      "dateStarted": "Jun 30, 2016 5:58:20 PM",
-      "dateFinished": "Jun 30, 2016 5:58:21 PM",
+      "dateStarted": "Jul 1, 2016 8:18:31 PM",
+      "dateFinished": "Jul 1, 2016 8:18:31 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "title": "Features Count",
       "text": "%sql\nSELECT vf.feature, count(*) as count \nFROM videos v, video_features vf\nWHERE v.videoId \u003d vf.videoId\nGROUP BY vf.feature\nORDER BY count(*) DESC",
-      "dateUpdated": "Jun 29, 2016 5:00:14 PM",
+      "dateUpdated": "Jul 1, 2016 8:20:47 PM",
       "config": {
         "colWidth": 6.0,
         "editorMode": "ace/mode/scala",
         "title": true,
         "graph": {
           "mode": "table",
-          "height": 346.0,
+          "height": 349.0,
           "optionOpen": true,
           "keys": [
             {
@@ -696,8 +763,8 @@
     },
     {
       "title": "User\u0027s Features",
-      "text": "%sql\nSELECT userId, feature, score \nFROM user_features\nWHERE userId\u003d${userId\u003d1}",
-      "dateUpdated": "Jun 29, 2016 4:51:30 PM",
+      "text": "%sql\nSELECT userId, feature, score, count \nFROM user_features\nWHERE userId\u003d${userId\u003d1}\nORDER By count",
+      "dateUpdated": "Jul 1, 2016 8:23:53 PM",
       "config": {
         "colWidth": 6.0,
         "title": true,
@@ -737,7 +804,7 @@
       },
       "settings": {
         "params": {
-          "userId": "1828847962"
+          "userId": "688435115"
         },
         "forms": {
           "userId": {
@@ -752,11 +819,11 @@
       "result": {
         "code": "SUCCESS",
         "type": "TABLE",
-        "msg": "userId\tfeature\tscore\n1828847962\tGuitar\t0.7600000000000001\n1828847962\tRichard Hamilton\t4.7085\n1828847962\tStephen Curry\t4.324333333333333\n1828847962\tJaylen Brown\t0.5700000000000001\n1828847962\tCam Newton\t4.89\n1828847962\tJon Cryer\t4.4039850000000005\n1828847962\tRichard Jefferson\t4.88\n1828847962\tToronto Raptors\t5.0\n1828847962\tRafael Nadal\t4.995\n1828847962\tBrandon Bass\t0.51\n1828847962\tAaron Hernandez\t2.605\n1828847962\tKris Dunn\t1.96\n1828847962\tThe 2016 Rio Olympic Games\t0.801\n1828847962\tJamal Murray\t1.125\n1828847962\tUnited States\t3.0\n1828847962\tLeBron James\t5.0\n1828847962\tFrench Open\t4.215\n1828847962\tArt Briles\t5.0\n1828847962\t2008 Wimbledon Championships\t4.6899999999999995\n1828847962\tDeath of Caylee Anthony\t5.0\n1828847962\tBaylor Bears football, 1915–19\t2.0749999999999997\n1828847962\tMichigan\t4.995\n1828847962\tAaron Rodgers\t4.96\n1828847962\tRaja Bell\t4.758571428571428\n1828847962\tNBA Most Valuable Player Award\t4.53\n1828847962\tFantasy baseball\t3.445\n1828847962\tKevin Love\t4.7036\n1828847962\tJose Baez\t4.965\n1828847962\tGolden State Warriors\t4.865888888888889\n1828847962\tCleveland Cavaliers\t4.8975\n1828847962\tDoug Gottlieb\t4.21\n1828847962\tBen Simmons\t0.9250000000000002\n1828847962\tLaMarcus Aldridge\t3.0\n1828847962\tTexas Rangers\t4.99\n1828847962\tDwane Casey\t4.99\n1828847962\tTyronn Lue\t4.699999999999999\n1828847962\tYu Darvish\t4.335\n1828847962\tSteve Kerr\t4.9975000000000005\n1828847962\tNBA draft\t2.765\n1828847962\tCollege basketball\t5.0\n1828847962\tBuzzer beater\t4.7749999999999995\n1828847962\tManny Machado\t0.7228\n1828847962\tAl Jefferson\t4.91\n1828847962\tSan Diego Padres\t2.9219999999999993\n1828847962\tPhiladelphia 76ers\t5.0\n1828847962\tSnoop Dogg\t2.1959999999999997\n1828847962\tHank Goldberg\t1.155\n1828847962\tUNK NBA\t4.840578947368421\n"
+        "msg": "userId\tfeature\tscore\tcount\n688435115\tCole Porter\t1.255\t1\n688435115\tRory McIlroy\t5.0\t1\n688435115\tBass guitar\t1.2149999999999999\t1\n688435115\tJustin Rose\t5.0\t5\n688435115\tPGA Tour\t5.0\t5\n688435115\tWells Fargo\t2.325\t5\n688435115\tMasters Tournament\t4.375\t5\n688435115\tUnited States\t5.0\t5\n688435115\tFootball League Championship\t1.205\t5\n688435115\tPhil Mickelson\t4.98\t5\n688435115\tQuicken Loans National\t4.9399999999999995\t5\n688435115\tDoug Gottlieb\t4.505\t5\n688435115\tDanny Willett\t1.925\t5\n688435115\tTiger Woods\t5.0\t5\n688435115\tRickie Fowler\t4.968333333333333\t6\n688435115\tJordan Spieth\t2.743888888888889\t9\n688435115\tTPC at Sawgrass\t3.575454545454545\t11\n688435115\tGolf\t4.947499999999999\t12\n688435115\tJason Day\t4.1038461538461535\t13\n688435115\tCBS Sports\t2.6766666666666667\t18\n688435115\tThe Players Championship\t3.68969696969697\t33\n"
       },
       "dateCreated": "Jun 23, 2016 8:33:26 PM",
-      "dateStarted": "Jun 29, 2016 4:51:30 PM",
-      "dateFinished": "Jun 29, 2016 4:51:30 PM",
+      "dateStarted": "Jul 1, 2016 8:23:53 PM",
+      "dateFinished": "Jul 1, 2016 8:23:54 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
